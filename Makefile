@@ -13,6 +13,8 @@ cpman-up:
 	./scripts/cpman-up.sh
 cpman-ssh:
 	./scripts/cpman-ssh.sh
+cpman-pass:
+	./scripts/cpman-pass.sh
 
 
 cluster-up:

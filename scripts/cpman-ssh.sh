@@ -17,7 +17,14 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
 fi
 
 #
-aws ec2-instance-connect ssh \
-  --instance-id "$INSTANCE_ID" \
-  --os-user admin \
-  --region eu-north-1
+# aws ec2-instance-connect ssh \
+#   --instance-id "$INSTANCE_ID" \
+#   --os-user admin \
+#   --region eu-north-1
+
+ssh -i ./secrets/cpman-keypair.pem admin@"$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" --query "Reservations[0].Instances[0].PublicIpAddress" --output text)" -o StrictHostKeyChecking=no "$@"
+if [ $? -ne 0 ]; then
+  echo "SSH connection failed. Please check your instance and network settings."
+  exit 1
+fi
+# echo "SSH connection established successfully."
