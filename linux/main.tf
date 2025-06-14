@@ -73,7 +73,7 @@ resource "aws_instance" "ubuntu" {
 
   user_data = <<-EOF
               #!/bin/bash
-              hostnamectl set-hostname linux
+              sudo hostnamectl set-hostname linux
               echo "Hello, World!" > /home/ubuntu/hello.txt
               EOF
 }
