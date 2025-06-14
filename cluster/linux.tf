@@ -20,12 +20,32 @@ resource "aws_route_table" "private_subnet_linux_rtb" {
     Name = "Linux Private Subnet Route Table"
   }
 }
+
+# target tag-name-Member_A_InternalInterface
+
+data "aws_network_interface" "cluster_private_subnet_eni" {
+  
+  depends_on = [module.cluster]
+
+  filter {
+    name   = "tag:Name"
+    values = ["Member_B_InternalInterface"]
+  }
+}
+
+output "eni_id" { 
+  value = try(data.aws_network_interface.cluster_private_subnet_eni.id, null)
+}
+
 resource "aws_route" "linux_private_subnet_route" {
   
+depends_on = [module.cluster]
+  count = try(data.aws_network_interface.cluster_private_subnet_eni.id, null) == null ? 0 : 1
+
   route_table_id = aws_route_table.private_subnet_linux_rtb.id
   destination_cidr_block = "0.0.0.0/0"
   // tag-name-Member_A_InternalInterface eni-0db051ff3bcd86134
-  network_interface_id = "eni-0db051ff3bcd86134"
+  network_interface_id = data.aws_network_interface.cluster_private_subnet_eni.id #"eni-0db051ff3bcd86134"
 }
 
 resource "aws_route_table_association" "private_subnet_linux_rtb_assoc" {
