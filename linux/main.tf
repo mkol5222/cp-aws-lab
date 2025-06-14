@@ -36,18 +36,19 @@ resource "aws_security_group" "ssh_access" {
   description = "Allow SSH access"
   vpc_id      = module.launch_vpc.vpc_id
 
+
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0/0"] # Allow SSH from anywhere (not recommended for production)
+    cidr_blocks = ["0.0.0.0/0"] # Allow SSH from anywhere (not recommended for production)
     # You can restrict this to your IP or a specific range for better security
   }
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1" # Allow all outbound traffic
-    cidr_blocks = ["0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
     Name        = "SSHAccess"
@@ -72,6 +73,7 @@ resource "aws_instance" "ubuntu" {
 
   user_data = <<-EOF
               #!/bin/bash
+              hostnamectl set-hostname linux
               echo "Hello, World!" > /home/ubuntu/hello.txt
               EOF
 }
