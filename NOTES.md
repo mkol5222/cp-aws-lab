@@ -10,3 +10,4 @@ winget install -e Amazon.AWSCLI
 aws configure
 aws sts get-caller-identity
 ``
+ 
