@@ -15,7 +15,9 @@ variable "public_subnets_map" {
 variable "private_subnets_map" {
   description = "Map of private subnets with availability zones"
   type        = map(number)
-  default     = {}
+  default     = {
+    "eu-north-1a" = 2
+  }
 }
 
 variable "subnets_bit_length" {
@@ -30,6 +32,6 @@ module "launch_vpc" {
 
   vpc_cidr = var.vpc_cidr
   public_subnets_map = var.public_subnets_map
-  private_subnets_map = {} // var.private_subnets_map
+  private_subnets_map = var.private_subnets_map
   subnets_bit_length = var.subnets_bit_length
 }

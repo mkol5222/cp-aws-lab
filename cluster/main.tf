@@ -2,19 +2,23 @@ provider "aws" {}
 
 module "cluster" {
 
-    source  = "CheckPointSW/cloudguard-network-security/aws//modules/cluster_master"
+    #source  = "CheckPointSW/cloudguard-network-security/aws//modules/cluster_master"
+    source  = "CheckPointSW/cloudguard-network-security/aws//modules/cluster"
     version = "1.0.2"
 
+    vpc_id = module.launch_vpc.vpc_id
 
+    public_subnet_id = module.launch_vpc.public_subnets_ids_list[0]
+    private_subnet_id = module.launch_vpc.private_subnets_ids_list[0]
     // --- VPC Network Configuration ---
-    vpc_cidr = "10.109.0.0/16"
-    public_subnets_map = {
-      "eu-north-1a" = 1
-    }
-    private_subnets_map = {
-      "eu-north-1a" = 2
-    }
-    subnets_bit_length = 8
+    # vpc_cidr = "10.109.0.0/16"
+    # public_subnets_map = {
+    #   "eu-north-1a" = 1
+    # }
+    # private_subnets_map = {
+    #   "eu-north-1a" = 2
+    # }
+    # subnets_bit_length = 8
 
     // --- EC2 Instance Configuration ---
     gateway_name = "cluster"
