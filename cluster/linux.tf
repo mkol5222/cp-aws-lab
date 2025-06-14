@@ -1,6 +1,12 @@
 
 # linux on private subnet
 
+variable "linux_routed" {
+  description = "Flag to indicate if Linux instance should be routed through a specific ENI"
+  type        = bool
+  default     = false
+}
+
 resource "aws_subnet" "private_subnet_linux" {
   
   vpc_id = module.launch_vpc.vpc_id //aws_vpc.vpc.id
@@ -24,7 +30,7 @@ resource "aws_route_table" "private_subnet_linux_rtb" {
 # target tag-name-Member_A_InternalInterface
 
 data "aws_network_interface" "cluster_private_subnet_eni" {
-  
+  count = var.linux_routed ? 1 : 0
   depends_on = [module.cluster]
 
   filter {
@@ -33,19 +39,19 @@ data "aws_network_interface" "cluster_private_subnet_eni" {
   }
 }
 
-output "eni_id" { 
-  value = try(data.aws_network_interface.cluster_private_subnet_eni.id, null)
-}
+# output "eni_id" { 
+#   value = try(data.aws_network_interface.cluster_private_subnet_eni.id, null)
+# }
 
 resource "aws_route" "linux_private_subnet_route" {
   
-depends_on = [module.cluster]
-  count = try(data.aws_network_interface.cluster_private_subnet_eni.id, null) == null ? 0 : 1
+  depends_on = [module.cluster]
+  count = var.linux_routed ? 1 : 0
 
   route_table_id = aws_route_table.private_subnet_linux_rtb.id
   destination_cidr_block = "0.0.0.0/0"
   // tag-name-Member_A_InternalInterface eni-0db051ff3bcd86134
-  network_interface_id = data.aws_network_interface.cluster_private_subnet_eni.id #"eni-0db051ff3bcd86134"
+  network_interface_id = try(data.aws_network_interface.cluster_private_subnet_eni[0].id, "n/a") #"eni-0db051ff3bcd86134"
 }
 
 resource "aws_route_table_association" "private_subnet_linux_rtb_assoc" {
