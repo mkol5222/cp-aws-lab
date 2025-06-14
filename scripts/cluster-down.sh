@@ -8,6 +8,8 @@ set -euo pipefail
 
 # data.aws_network_interface.cluster_private_subnet_eni.id
 
+(cd cluster/; terraform state list | grep eni | while read R; do terraform destroy -target "$R" -auto-approve; done)
+
 (cd cluster && terraform destroy -target module.cluster -auto-approve)
 
 # all ENI

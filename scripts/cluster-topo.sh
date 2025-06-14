@@ -81,7 +81,7 @@ cat <<EOF
 mgmt_cli -r true add simple-cluster name "clu"\
     color "pink"\
     version "R81.20"\
-    ip-address "${VIP_PUB}"\
+    ip-address "${VIP_ETH0}"\
     os-name "Gaia"\
     cluster-mode "cluster-xl-ha"\
     firewall true\
@@ -118,5 +118,7 @@ mgmt_cli -r true add simple-cluster name "clu"\
     members.2.interfaces.2.name "eth1"\
     members.2.interfaces.2.ip-address "${HA2_ETH1}"\
     members.2.interfaces.2.network-mask "255.255.255.0"\
+    send-logs-to-server cpman-pub \
+    nat-hide-internal-interfaces true \
     --format json
 EOF
