@@ -13,3 +13,9 @@ cpman-up:
 	./scripts/cpman-up.sh
 cpman-ssh:
 	./scripts/cpman-ssh.sh
+
+
+cluster-up:
+	./scripts/cluster-up.sh
+cluster-down:
+	./scripts/cluster-down.sh
