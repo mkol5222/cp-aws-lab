@@ -7,13 +7,28 @@ provider "aws" {
 }
 
 data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720109477"] # Canonical
+    most_recent = true
+    owners      = ["099720109477"] # Canonical
 
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-24.04-amd64-server-*"]
-  }
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-24.04-amd64-server-*", "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    }
+
+    filter {
+        name   = "architecture"
+        values = ["x86_64"]
+    }
+
+    filter {
+        name   = "root-device-type"
+        values = ["ebs"]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
+    }
 }
 
 resource "aws_instance" "ubuntu" {
