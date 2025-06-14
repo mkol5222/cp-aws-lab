@@ -45,7 +45,7 @@ data "aws_network_interface" "cluster_private_subnet_eni" {
 
 resource "aws_route" "linux_private_subnet_route" {
   
-  depends_on = [module.cluster]
+  
   count = var.linux_routed ? 1 : 0
 
   route_table_id = aws_route_table.private_subnet_linux_rtb.id
