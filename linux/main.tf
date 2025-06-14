@@ -64,7 +64,8 @@ resource "aws_instance" "ubuntu" {
   subnet_id     = var.subnet_id == null ? module.launch_vpc[0].public_subnets_ids_list[0] : var.subnet_id
   key_name      = var.keypair_name == null ? aws_key_pair.generated_key[0].key_name : var.keypair_name
   // associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.ssh_access.id]
+  // vpc_security_group_ids      = [aws_security_group.ssh_access.id]
+  vpc_security_group_ids      = [aws_security_group.sg.id]
 
   tags = {
     Name        = "linux"

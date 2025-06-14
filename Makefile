@@ -9,6 +9,8 @@ cpman-serial:
 
 cpman-down:
 	./scripts/cpman-down.sh
+
+cpman: cpman-up cpman-pass
 cpman-up:
 	./scripts/cpman-up.sh
 cpman-ssh:
@@ -16,7 +18,7 @@ cpman-ssh:
 cpman-pass:
 	./scripts/cpman-pass.sh
 
-
+cluster: cluster-up cluster-topo
 cluster-up:
 	./scripts/cluster-up.sh
 cluster-down:
@@ -31,3 +33,6 @@ cluster-ssh-b:
 
 cluster-topo:
 	./scripts/cluster-topo.sh
+
+cluster-linux-serial:
+	./scripts/cluster-linux-serial.sh

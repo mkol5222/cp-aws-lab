@@ -8,6 +8,10 @@ output "ip_clu" {
   value = module.cluster.cluster_public_ip
 }
 
+output "linux_instance_id" {
+  value = module.launch_linux.instance_id
+}
+
 # output "vpc_id" {
 #   description = "ID of the VPC"
 #   value       = module.cluster.vpc_id
