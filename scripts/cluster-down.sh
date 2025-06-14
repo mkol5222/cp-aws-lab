@@ -12,7 +12,7 @@ set -euo pipefail
 
 # all ENI
 
-(cd cluster && terraform apply -target data.aws_network_interface.cluster_private_subnet_eni -auto-approve)
+# (cd cluster && terraform apply -target data.aws_network_interface.cluster_private_subnet_eni -auto-approve)
 (cd cluster && terraform destroy -auto-approve)
 
 echo
