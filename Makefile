@@ -21,3 +21,13 @@ cluster-up:
 	./scripts/cluster-up.sh
 cluster-down:
 	./scripts/cluster-down.sh
+
+cluster-ssh: cluster-ssh-a
+
+cluster-ssh-a:
+	./scripts/cluster-ssh.sh a
+cluster-ssh-b:
+	./scripts/cluster-ssh.sh b
+
+cluster-topo:
+	./scripts/cluster-topo.sh

@@ -17,7 +17,7 @@ module "cluster" {
     subnets_bit_length = 8
 
     // --- EC2 Instance Configuration ---
-    gateway_name = "Check-Point-Cluster-tf"
+    gateway_name = "cluster"
     gateway_instance_type = "c5.xlarge"
     key_name = aws_key_pair.generated_key.key_name
     allocate_and_associate_eip = true
