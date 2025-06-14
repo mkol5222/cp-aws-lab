@@ -12,6 +12,12 @@ variable "public_subnets_map" {
   }
 }
 
+variable "private_subnets_map" {
+  description = "Map of private subnets with availability zones"
+  type        = map(number)
+  default     = {}
+}
+
 variable "subnets_bit_length" {
   description = "Bit length for subnets"
   type        = number
@@ -20,11 +26,6 @@ variable "subnets_bit_length" {
 
 // --- VPC ---
 module "launch_vpc" {
-
- count = var.subnet_id == null ? 1 : 0
-
-
-
  source  = "CheckPointSW/cloudguard-network-security/aws//modules/vpc"
 
   vpc_cidr = var.vpc_cidr

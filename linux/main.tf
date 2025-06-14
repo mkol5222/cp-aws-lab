@@ -34,7 +34,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_security_group" "ssh_access" {
   name        = "ssh_access"
   description = "Allow SSH access"
-  vpc_id      = module.launch_vpc.vpc_id
+  vpc_id      = var.subnet_id == null ? module.launch_vpc[0].vpc_id : var.vpc_id
 
 
   ingress {
@@ -61,9 +61,9 @@ resource "aws_security_group" "ssh_access" {
 resource "aws_instance" "ubuntu" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  subnet_id     = module.launch_vpc.public_subnets_ids_list[0]
+  subnet_id     = var.subnet_id == null ? module.launch_vpc[0].public_subnets_ids_list[0] : var.subnet_id
   key_name      = aws_key_pair.generated_key.key_name // var.key_name
-  associate_public_ip_address = true
+  // associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.ssh_access.id]
 
   tags = {
