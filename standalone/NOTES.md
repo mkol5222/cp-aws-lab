@@ -27,4 +27,26 @@ aws ec2 describe-key-pairs --query "KeyPairs[].{Name:KeyName, Fingerprint:KeyFin
 
 # create new SSH keypair in EC2
 aws ec2 create-key-pair --key-name aws-lab --query "KeyMaterial" --output text > aws-lab.pem
+
+# connect serial console of EC2 instance using AWS CLI, no sending of keys
+aws ec2 enable-serial-console-access
+aws ec2 get-serial-console-access-status
+
+ssh-keygen # if needed
+
+aws ec2-instance-connect send-serial-console-ssh-public-key \
+    --instance-id i-00ebe271d7892fa64 \
+    --serial-port 0 \
+    --ssh-public-key file://~/.ssh/id_rsa.pub \
+    --region eu-north-1
+
+
+ssh -i ~/.ssh/id_rsa i-00ebe271d7892fa64.port0@serial-console.ec2-instance-connect.eu-north-1.aws
+
+
+#  vs ssh
+aws ec2-instance-connect ssh \
+  --instance-id i-00ebe271d7892fa64 \
+  --region eu-north-1
+
 ```
