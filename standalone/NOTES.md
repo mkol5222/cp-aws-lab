@@ -12,6 +12,8 @@ terraform apply -auto-approve
 
 terraform output
 
+terraform destroy -auto-approve
+
 # query instance via aws cli
 aws ec2 describe-instances  --query "Reservations[].Instances[].{ID:InstanceId,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}" --output table
 # with all tags
