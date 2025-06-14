@@ -9,5 +9,10 @@ winget install -e Amazon.AWSCLI
 
 aws configure
 aws sts get-caller-identity
-``
+```
+
+
+```bash
+export AWS_DEFAULT_REGION="eu-north-1"
+```
  

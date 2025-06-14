@@ -7,7 +7,7 @@ terraform init
 
 terraform apply -target module.standalone_cp.aws_route_table.private_subnet_rtb -auto-approve
 
-terraform apply
+terraform apply -auto-approve
 
 
 terraform output
@@ -23,4 +23,8 @@ aws ec2 describe-instances --filters "Name=tag:Name,Values=standalone-cp" "Name=
 
 # list my SSH keys
 aws ec2 describe-key-pairs --query "KeyPairs[].{Name:KeyName, Fingerprint:KeyFingerprint}" --output table
+
+
+# create new SSH keypair in EC2
+aws ec2 create-key-pair --key-name aws-lab --query "KeyMaterial" --output text > aws-lab.pem
 ```

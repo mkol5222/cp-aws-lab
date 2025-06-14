@@ -18,7 +18,7 @@ module "standalone_cp" {
     // --- EC2 Instance Configuration ---
     standalone_name = "standalone-cp"
     standalone_instance_type = "c5.xlarge"
-    key_name = "t14"
+    key_name = "aws-lab"
     allocate_and_associate_eip = true
     volume_size = 100
     volume_encryption = "alias/aws/ebs"
