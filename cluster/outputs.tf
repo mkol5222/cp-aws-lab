@@ -8,3 +8,16 @@ output "ip_clu" {
   value = module.cluster.cluster_public_ip
 }
 
+# output "vpc_id" {
+#   description = "ID of the VPC"
+#   value       = module.cluster.vpc_id
+# }
+# output "public_subnets" {
+#   description = "List of public subnet IDs"
+#   value       = module.cluster.public_subnets_ids_list
+# }
+# output "private_subnets" {
+#   description = "List of private subnet IDs"
+#   value       = module.cluster.private_subnets_ids_list
+# }
+
