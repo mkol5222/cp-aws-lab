@@ -2,7 +2,7 @@
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
-  default     = "172.17.0.0/16"
+  default     = "172.18.0.0/16"
 }
 variable "public_subnets_map" {
   description = "Map of public subnets with availability zones"

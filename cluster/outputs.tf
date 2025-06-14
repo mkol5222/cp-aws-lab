@@ -5,7 +5,7 @@ output "ip_b" {
   value = module.cluster.member_b_public_ip[0]
 }
 output "ip_clu" {
-  value = module.cluster.cluster_public_ip
+  value = module.cluster.cluster_public_ip[0]
 }
 
 output "linux_instance_id" {
