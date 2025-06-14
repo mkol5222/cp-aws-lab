@@ -62,7 +62,6 @@ resource "aws_route_table_association" "private_subnet_linux_rtb_assoc" {
 
 module "launch_linux" {
   
-
   source = "../linux"
 
   subnet_id      = aws_subnet.private_subnet_linux.id // module.launch_vpc.private_subnets_ids_list[1]
