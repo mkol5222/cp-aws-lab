@@ -17,7 +17,7 @@ output "private_key_pem" {
 # Optional: Write private key to a local file (do NOT commit this file!)
 resource "local_file" "private_key" {
   content              = tls_private_key.ssh_key.private_key_pem
-  filename             = "${path.module}/../secrets/cluster-keypair.pem"
+  filename             = "${path.module}/../../secrets/cluster-keypair.pem"
   file_permission      = "0600"
   directory_permission = "0700"
 }

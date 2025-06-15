@@ -5,5 +5,5 @@ module "cluster" {
     public_subnets = module.network.public_subnets
     private_subnets = module.network.private_subnets
 
-    keypair_name = aws_key_pair.generated_key.key_name
+    keypair_name = module.ssh.keypair_name
 }

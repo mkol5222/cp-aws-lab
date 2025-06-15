@@ -6,8 +6,10 @@ set -euo pipefail
 
 (cd cluster && terraform init)
 
-# network and SSH keypair for cluster and Linux VM
+# network 
 (cd cluster && terraform apply -target=module.network -auto-approve)
+# and SSH keypair for cluster and Linux VM
+(cd cluster && terraform apply -target=module.ssh -auto-approve)
 # then cluster to this VPC
 (cd cluster && terraform apply -target=module.cluster -auto-approve)
 

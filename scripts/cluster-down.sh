@@ -6,8 +6,10 @@ set -euo pipefail
 
 # then cluster to this VPC
 (cd cluster && terraform destroy -target=module.cluster -auto-approve)
-# SSH keypair and network goest LAST
+#  network goest LAST
 (cd cluster && terraform destroy -target module.network -auto-approve)
+# SSH keypair 
+(cd cluster && terraform destroy -target module.ssh -auto-approve)
 
 # (cd cluster && terraform destroy -target module.launch_linux -auto-approve)
 
