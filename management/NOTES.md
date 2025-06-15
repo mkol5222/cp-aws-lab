@@ -28,4 +28,26 @@ ssh -i ~/.ssh/id_rsa "${INSTANCE_ID}.port0@serial-console.ec2-instance-connect.e
 
 # make API accessible from all IP addresses
 mgmt_cli -r true set api-settings accepted-api-calls-from "All IP addresses"  --domain 'System Data' --format json
+
+
+INSTANCE_ID=$(cd management; terraform output -raw id)
+
+# if not provided, exit
+if [ -z "$INSTANCE_ID" ]; then
+  echo "Instance ID not provided. Exiting."
+  exit 1
+fi
+
+# ip address
+IP_ADDRESS=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
+if [ -z "$IP_ADDRESS" ]; then
+  echo "No public IP address found for instance $INSTANCE_ID. Exiting."
+  exit 1
+fi
+
+echo $IP_ADDRESS
+echo mgmt_cli -r true add checkpoint-host name "cpman-pub" ipv4-address "$IP_ADDRESS" management-blades.network-policy-management false management-blades.logging-and-status true  --format json
+
+# add network net-linux with 172.17.3.0/24
+mgmt_cli -r true add network name "net-linux" subnet "172.17.3.0" subnet-mask "255.255.255.0"  --format json
 ```
