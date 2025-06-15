@@ -2,13 +2,23 @@
 
 set -euo pipefail
 
-INSTANCE_ID=$(cd management; terraform output -raw id)
+# assume "A" when no argument
+MEMBER="${1:-a}"
 
-# if not provided, exit
+MEMBER_UPERCASE=$(echo "$MEMBER" | tr '[:lower:]' '[:upper:]')
+
+# look for running instance Named cluster-Member-A or cluster-Member-B
+INSTANCE_ID=$(aws ec2 describe-instances \
+  --filters "Name=tag:Name,Values=cluster-Member-${MEMBER_UPERCASE}" "Name=instance-state-name,Values=running" \
+  --query "Reservations[*].Instances[*].InstanceId" \
+  --output text)
+# if not found, exit
 if [ -z "$INSTANCE_ID" ]; then
-  echo "Instance ID not provided. Exiting."
+  echo "Instance ID for cluster-Member-${MEMBER_UPERCASE} not found. Exiting."
   exit 1
 fi
+
+echo "Instance ID for cluster-Member-${MEMBER_UPERCASE}: $INSTANCE_ID"
 
 # if no ~/.ssh/id_rsa.pub, exit
 if [ ! -f ~/.ssh/id_rsa.pub ]; then

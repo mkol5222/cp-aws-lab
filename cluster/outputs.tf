@@ -29,3 +29,12 @@ output "linux_instance_id" {
   value = module.linux.linux_instance_id
 }
 
+output "ip_a" {
+  value = module.cluster.ip_a
+}
+output "ip_b" {
+  value = module.cluster.ip_b
+}
+output "ip_clu" {
+  value = module.cluster.ip_clu
+}

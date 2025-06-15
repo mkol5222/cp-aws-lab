@@ -24,6 +24,13 @@ cluster-up:
 cluster-down:
 	./scripts/cluster-down.sh
 
+cluster-serial:
+	./scripts/cluster-serial.sh
+cluster-serial-a:
+	./scripts/cluster-serial.sh a
+cluster-serial-b:
+	./scripts/cluster-serial.sh b
+
 cluster-ssh: cluster-ssh-a
 
 cluster-ssh-a:
