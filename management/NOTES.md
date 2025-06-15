@@ -24,4 +24,8 @@ echo  ssh -i ~/.ssh/id_rsa "${INSTANCE_ID}.port0@serial-console.ec2-instance-con
 ssh -i ~/.ssh/id_rsa "${INSTANCE_ID}.port0@serial-console.ec2-instance-connect.eu-north-1.aws"
 
 # leave with Enter ~. Enter ~. to exit the serial console
+
+
+# make API accessible from all IP addresses
+mgmt_cli -r true set api-settings accepted-api-calls-from "All IP addresses"  --domain 'System Data' --format json
 ```
