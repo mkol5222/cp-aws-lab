@@ -15,9 +15,18 @@ echo "NETWORK up"
 # then cluster to this VPC
 echo "CLUSTER up"
 (cd cluster && terraform apply -target=module.cluster -auto-approve)
+
+
+# ENI cluster-Member_A_InternalInterface
+CLUSTER_MEMBER_A_INTERNAL_ENI=$(aws ec2 describe-network-interfaces \
+  --filters "Name=tag:Name,Values=cluster-Member_A_InternalInterface"  \
+  --query "NetworkInterfaces[0].NetworkInterfaceId" \
+  --output text)
+echo "CLUSTER_MEMBER_A_INTERNAL_ENI: $CLUSTER_MEMBER_A_INTERNAL_ENI"
+
 # Linux last
 echo "LINUX up"
-(cd cluster && terraform apply -target=module.linux -auto-approve)
+(cd cluster && terraform apply -var "internal_eni_id=$CLUSTER_MEMBER_A_INTERNAL_ENI" -target=module.linux -auto-approve)
 
 echo
 echo "OUTPUTS:"

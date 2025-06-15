@@ -12,3 +12,9 @@ variable "keypair_name" {
   description = "Name of the keypair to use for SSH access to the instances"
   type        = string
 }
+
+variable "internal_eni_id" {
+  description = "The ID of the internal ENI of active cluster member"
+  type        = string
+  default = null
+}

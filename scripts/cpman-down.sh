@@ -7,4 +7,6 @@ set -euo pipefail
 (cd management && terraform destroy -auto-approve)
 
 echo
+echo "Remaining TF state:"
 (cd management; terraform state list)
+echo "__END__"
