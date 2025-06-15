@@ -1,15 +1,11 @@
 
 # linux on private subnet
 
-variable "linux_routed" {
-  description = "Flag to indicate if Linux instance should be routed through a specific ENI"
-  type        = bool
-  default     = false
-}
+
 
 resource "aws_subnet" "private_subnet_linux" {
   
-  vpc_id = module.launch_vpc.vpc_id //aws_vpc.vpc.id
+  vpc_id = var.vpc_id //aws_vpc.vpc.id
   availability_zone = "eu-north-1a" // Replace with your desired availability zone
   cidr_block = "172.17.3.0/24"
   # ipv6_cidr_block = var.enable_ipv6 ? cidrsubnet(aws_vpc.vpc.ipv6_cidr_block, var.subnets_bit_length, each.value) : null
@@ -21,7 +17,7 @@ resource "aws_subnet" "private_subnet_linux" {
 # routing table for Linux private subnet
 resource "aws_route_table" "private_subnet_linux_rtb" {
   
-  vpc_id = module.launch_vpc.vpc_id //aws_vpc.vpc.id
+  vpc_id = var.vpc_id //aws_vpc.vpc.id
   tags = {
     Name = "Linux Private Subnet Route Table"
   }
@@ -61,14 +57,14 @@ resource "aws_route_table_association" "private_subnet_linux_rtb_assoc" {
 
 module "launch_linux" {
   
-  source = "../linux"
+  source = "../../linux"
 
   subnet_id      = aws_subnet.private_subnet_linux.id // module.launch_vpc.private_subnets_ids_list[1]
-  vpc_id         = module.launch_vpc.vpc_id
+  vpc_id         = var.vpc_id
 
-    keypair_name      = aws_key_pair.generated_key.key_name
+    keypair_name      = var.keypair_name // aws_key_pair.generated_key.key_name
 }
 
-output "debug_priv_subnets" {
-  value = module.launch_vpc.private_subnets_ids_list
-}
+# output "debug_priv_subnets" {
+#   value = module.launch_vpc.private_subnets_ids_list
+# }

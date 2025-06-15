@@ -7,3 +7,4 @@ output "ip_b" {
 output "ip_clu" {
   value = module.cluster.cluster_public_ip[0]
 }
+

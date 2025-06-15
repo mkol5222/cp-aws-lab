@@ -4,6 +4,8 @@ set -euo pipefail
 
 (cd cluster || exit 1)
 
+# Linux first
+(cd cluster && terraform destroy -target=module.linux -auto-approve)
 # then cluster to this VPC
 (cd cluster && terraform destroy -target=module.cluster -auto-approve)
 #  network goest LAST

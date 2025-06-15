@@ -2,7 +2,7 @@
 resource "aws_security_group" "sg" {
   name        = "sg"
   description = "Allow all traffic"
-vpc_id      = var.subnet_id == null ? module.launch_vpc[0].vpc_id : var.vpc_id
+vpc_id      = var.vpc_id // var.subnet_id == null ? module.launch_vpc[0].vpc_id : var.vpc_id
 
   ingress {
     from_port   = 0

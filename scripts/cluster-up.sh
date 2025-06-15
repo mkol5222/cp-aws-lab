@@ -6,13 +6,14 @@ set -euo pipefail
 
 (cd cluster && terraform init)
 
-# network 
-(cd cluster && terraform apply -target=module.network -auto-approve)
 # and SSH keypair for cluster and Linux VM
 (cd cluster && terraform apply -target=module.ssh -auto-approve)
+# network 
+(cd cluster && terraform apply -target=module.network -auto-approve)
 # then cluster to this VPC
 (cd cluster && terraform apply -target=module.cluster -auto-approve)
-
+# Linux last
+(cd cluster && terraform apply -target=module.linux -auto-approve)
 
 #(cd cluster && terraform apply -target=module.cluster.aws_route_table.private_subnet_rtb -auto-approve)
 # (cd cluster && terraform apply -target=module.launch_vpc -auto-approve)

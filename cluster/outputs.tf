@@ -25,3 +25,7 @@
 #   value       = module.cluster.private_subnets_ids_list
 # }
 
+output "linux_instance_id" {
+  value = module.linux.linux_instance_id
+}
+
