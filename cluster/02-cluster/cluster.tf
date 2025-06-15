@@ -6,10 +6,10 @@ module "cluster" {
     source  = "CheckPointSW/cloudguard-network-security/aws//modules/cluster"
     version = "1.0.2"
 
-    vpc_id = module.launch_vpc.vpc_id
+    vpc_id = var.vpc_id
 
-    public_subnet_id = module.launch_vpc.public_subnets_ids_list[0]
-    private_subnet_id = module.launch_vpc.private_subnets_ids_list[0]
+    public_subnet_id = var.public_subnets[0]
+    private_subnet_id = var.private_subnets[0]
     // --- VPC Network Configuration ---
     # vpc_cidr = "10.109.0.0/16"
     # public_subnets_map = {
@@ -23,7 +23,7 @@ module "cluster" {
     // --- EC2 Instance Configuration ---
     gateway_name = "cluster"
     gateway_instance_type = "c5.xlarge"
-    key_name = aws_key_pair.generated_key.key_name
+    key_name = var.keypair_name // aws_key_pair.generated_key.key_name
     allocate_and_associate_eip = true
     volume_size = 100
     volume_encryption = "alias/aws/ebs"
@@ -47,7 +47,7 @@ module "cluster" {
     memberBToken = ""
   
     // --- Advanced Settings ---
-    resources_tag_name = "tag-name"
+    resources_tag_name = "cluster"
     gateway_hostname = "clu"
     allow_upload_download = true
     enable_cloudwatch = false
