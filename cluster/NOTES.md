@@ -36,3 +36,5 @@ function wait_for_port() {
     echo "$ip:$port is now open."
 }
 wait_for_port "13.50.184.210" "18211"
+# 13.51.202.207
+wait_for_port "13.51.202.207" "18211"
