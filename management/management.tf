@@ -1,36 +1,4 @@
 
-
-# output "debug" {
-#     value = module.launch_vpc.public_subnets_ids_list
-# }
-
-# EC2 SSH keypair created on demand
-
-
-resource "tls_private_key" "ssh_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-resource "aws_key_pair" "generated_key" {
-  key_name   = "cpman-keypair"
-  public_key = tls_private_key.ssh_key.public_key_openssh
-}
-
-output "private_key_pem" {
-  description = "Private key content (PEM format)"
-  value       = tls_private_key.ssh_key.private_key_pem
-  sensitive   = true
-}
-
-# Optional: Write private key to a local file (do NOT commit this file!)
-resource "local_file" "private_key" {
-  content              = tls_private_key.ssh_key.private_key_pem
-  filename             = "${path.module}/../secrets/cpman-keypair.pem"
-  file_permission      = "0600"
-  directory_permission = "0700"
-}
-
 module "cpman" {
 
     source  = "CheckPointSW/cloudguard-network-security/aws//modules/management"
@@ -50,10 +18,10 @@ module "cpman" {
     enable_instance_connect = false
     disable_instance_termination = false
     instance_tags = {
-    key1 = "value1"
-    key2 = "value2"
-    "X-mko" = "MadeByTF"
-    "X-mko-role" = "cpman"
+      key1 = "value1"
+      key2 = "value2"
+      "X-mko" = "MadeByTF"
+      "X-mko-role" = "cpman"
     }
     
     // --- IAM Permissions ---
@@ -71,10 +39,10 @@ module "cpman" {
     management_installation_type = "Primary management"
     SICKey = ""
     allow_upload_download = "true"
-    gateway_management = "Locally managed"
+    gateway_management = "Over the internet" //"Locally managed"
     admin_cidr = "0.0.0.0/0"
     gateway_addresses = "0.0.0.0/0"
     primary_ntp = ""
     secondary_ntp = ""
-    management_bootstrap_script = "echo 'this is bootstrap script' > /home/admin/bootstrap.txt"
+    management_bootstrap_script = "(date; uptime; echo 'this is bootstrap script') > /home/admin/bootstrap.txt"
 }
