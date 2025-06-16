@@ -15,6 +15,7 @@ fi
 echo "Using member: $MEMBER ${IP_OUTPUT_NAME} ${IP_ADDRESS}"
 echo
 
+echo "Trying SSH connection to ${IP_ADDRESS} with key ./secrets/cluster-keypair.pem"
 REST_OF_ARGS="${@:2}"
 ssh -i ./secrets/cluster-keypair.pem admin@"$IP_ADDRESS" -o StrictHostKeyChecking=no fw stat
 if [ $? -ne 0 ]; then
@@ -31,6 +32,6 @@ function wait_for_port() {
         echo "Waiting for $ip:$port to be open..."
         sleep 5
     done
-    echo "$ip:$port is now open."
+    echo "$ip:$port is now open. Ready to proceed."
 }
 wait_for_port "${IP_ADDRESS}" "18211"

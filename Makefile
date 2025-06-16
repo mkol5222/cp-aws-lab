@@ -46,3 +46,11 @@ cluster-topo:
 
 cluster-linux-serial:
 	./scripts/cluster-linux-serial.sh
+
+cluster-wait:
+	./scripts/cluster-wait-for-sic.sh a
+	./scripts/cluster-wait-for-sic.sh b
+cluster-wait-a:
+	./scripts/cluster-wait-for-sic.sh a
+cluster-wait-b:
+	./scripts/cluster-wait-for-sic.sh b
