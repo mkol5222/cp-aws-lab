@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     checkpoint = {
-      source = "CheckPointSW/checkpoint"
+      source  = "CheckPointSW/checkpoint"
       version = "2.10.0"
     }
   }
@@ -9,5 +9,5 @@ terraform {
 
 provider "checkpoint" {
   # Configuration options
-  
+
 }
