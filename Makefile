@@ -59,3 +59,8 @@ policy: policy-up
 
 policy-up:
 	./scripts/policy-up.sh
+
+asg-up:
+	./scripts/asg-up.sh
+asg-down:
+	./scripts/asg-down.sh
