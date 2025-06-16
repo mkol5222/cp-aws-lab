@@ -44,5 +44,5 @@ module "cpman" {
     gateway_addresses = "0.0.0.0/0"
     primary_ntp = ""
     secondary_ntp = ""
-    management_bootstrap_script = "(date; uptime; echo 'this is bootstrap script') > /home/admin/bootstrap.txt"
+    management_bootstrap_script = "mgmt_cli -r true set api-settings accepted-api-calls-from 'All IP addresses' --domain 'System Data' --format json; (date; uptime; ) > /home/admin/bootstrap.txt"
 }

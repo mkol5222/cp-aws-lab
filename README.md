@@ -10,8 +10,10 @@ Repository to demonstrate CloudGuard NS deployment automation into AWS using Ter
 
 ## Instructions
 
-Open project in Codespace or localy in DevContainer and continue.
+Open project in [Codespace](https://github.com/codespaces/new?repo=mkol5222/cp-aws-lab) or localy in DevContainer and continue.
 This environment already has all required tools like `terraform`, AWS CLI installed.
+
+Consider forking this repo [`mkol5222/cp-aws-lab`](https://github.com/mkol5222/cp-aws-lab) before continuing and open Codespace of your forked repository.
 
 Bring AWS credentials into environment variables:
 ```shell
