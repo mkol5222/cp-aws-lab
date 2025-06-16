@@ -11,9 +11,9 @@ echo "Waiting for API to be available at Security Management ${CPMAN_IP}"
 PAYLOAD=$(jq -n --arg user "admin" --arg pass "$CPMAN_PASS" '{"user": $user, "password": $pass}')
 
 while true; do
-    RESP=$(curl -s -m 5 -k "https://${CPMAN_IP}/web_api/login" -H 'Content-Type: application/json' --data "$PAYLOAD")
+    RESP=$(curl -s -m 5 -k "https://${CPMAN_IP}/web_api/login" -H 'Content-Type: application/json' --data "$PAYLOAD" || echo "{}")
     # echo "$RESP" | jq .
-    SID=$((echo "$RESP" | jq -r .sid 2>/dev/null) || echo 'null')
+    SID=$(echo "$RESP" | jq -r 'try .sid // "null"' 2>/dev/null || echo "null")
     # echo "SID: $SID"
 
     if [[ "$SID" != "null" ]]; then
