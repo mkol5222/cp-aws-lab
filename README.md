@@ -99,6 +99,10 @@ make cluster-linux-serial
 | `make cpman-ssh`    | Attempts to SSH into the Check Point Management Server instance  |
 | `make cpman-wait`   | Waits for the Check Point Management Server to be ready          |
 | `make cpman-pass`    | Retrieves IP and the password for the Check Point Management Server     |
+| `make cluster` | Deploy cluster and Linux test VM |
+| `make cluster-topo` | Get `add simple-cluster` command to add cluster to Management zero effort |
+
+... and more in [`Makefile`](./Makefile)
 
 ## Cleanup
 
