@@ -23,6 +23,8 @@ export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
 export AWS_DEFAULT_REGION="eu-north-1" 
 ```
 
+Maagement server deployment is defined in [`managememt/management.tf`](./management/management.tf) file based on usage instructions from module's [README file](https://github.com/CheckPointSW/terraform-aws-cloudguard-network-security/tree/master/modules/management#usage).
+
 Deploy Check Point Management Server and wait until it is ready:
 ```shell
 make cpman
@@ -47,3 +49,12 @@ while true; do make cpman-ssh; sleep 5; done
 | `make cpman`        | Deploys the Check Point Management Server                        |
 | `make cpman-serial` | Monitors deployment progress via the serial line console         |
 | `make cpman-ssh`    | Attempts to SSH into the Check Point Management Server instance  |
+| `make cpman-wait`   | Waits for the Check Point Management Server to be ready          |
+| `make cpman-pass`    | Retrieves IP and the password for the Check Point Management Server     |
+
+## Cleanup
+
+To remove Security Management server:
+```shell
+make cpman-down
+```
