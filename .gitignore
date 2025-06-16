@@ -38,3 +38,6 @@ terraform.rc
 
 secrets/
 standalone/aws-lab.pem
+
+sid.json
+policy/sid.json
