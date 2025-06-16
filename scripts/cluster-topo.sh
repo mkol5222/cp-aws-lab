@@ -45,11 +45,26 @@ echo "Cluster topology information retrieved successfully."
 # echo "$GWLINES" | head -1
 HA1_ETH0_PUB=$(echo "$GWLINES" | grep cluster-Member-A | jq -r '.PublicIP')
 HA1_ETH0=$(echo "$GWLINES" | grep cluster-Member-A | jq -r '.PrivateIP')
-HA1_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[0].PrivateIpAddresses[0].PrivateIpAddress')
-VIP_ETH0=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[1].PrivateIpAddresses[1].PrivateIpAddress')
-VIP_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[0].PrivateIpAddresses[1].PrivateIpAddress')
+# HA1_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[0].PrivateIpAddresses[0].PrivateIpAddress')
+# member IP internal
+HA1_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member A internal")| .PrivateIpAddresses[] | select(.Primary)|.PrivateIpAddress')
+
+# VIP_ETH0=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[1].PrivateIpAddresses[1].PrivateIpAddress')
+# cluster IP external
+VIP_ETH0=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member A external")| .PrivateIpAddresses[]| select(.Primary == false)|.PrivateIpAddress')
+
+# VIP_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[0].PrivateIpAddresses[1].PrivateIpAddress')
+# cluster IP internal
+VIP_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member A internal")| .PrivateIpAddresses[]| select(.Primary == false)|.PrivateIpAddress')
+
 echo "node A Public IP: $HA1_ETH0_PUB"
 echo "node A Private IP: $HA1_ETH0 (eth0) and $HA1_ETH1 (eth1)"
+
+
+# member IP 
+# echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member A external")| .PrivateIpAddresses[] | select(.Primary)|.PrivateIpAddress'
+
+
 
 #echo "$GWLINES" | head -1 | jq -c -r '.NetworkInterfaces[].PrivateIpAddresses[].Association'
 
@@ -65,11 +80,18 @@ echo
 # echo "$GWLINES" | grep cluster-Member-B
 HA2_ETH0_PUB=$(echo "$GWLINES" | grep cluster-Member-B | jq -r '.PublicIP')
 HA2_ETH0=$(echo "$GWLINES" | grep cluster-Member-B | jq -r '.PrivateIP')
-HA2_ETH1=$(echo "$GWLINES" | grep cluster-Member-B | jq -c -r '.NetworkInterfaces[0].PrivateIpAddresses[0].PrivateIpAddress')
+# HA2_ETH1=$(echo "$GWLINES" | grep cluster-Member-B | jq -c -r '.NetworkInterfaces[0].PrivateIpAddresses[0].PrivateIpAddress')
+
+# member IP internal
+HA2_ETH1=$(echo "$GWLINES" | grep cluster-Member-B | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member B internal")| .PrivateIpAddresses[] | select(.Primary)|.PrivateIpAddress')
+
+
 echo "node B Public IP: $HA2_ETH0_PUB"
 echo "node B Private IP: $HA2_ETH0 (eth0) and $HA2_ETH1 (eth1)"
 
 VIP_PUB=$(cd cluster; terraform output -raw ip_clu)
+
+
 
 echo
 echo "Cluster VIP Public IP: $VIP_PUB"
