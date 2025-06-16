@@ -10,11 +10,12 @@ if [ -z "$INSTANCE_ID" ]; then
   exit 1
 fi
 
-# if no ~/.ssh/id_rsa.pub, exit
+# if no ~/.ssh/id_rsa.pub, fix it
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
-  echo "No SSH public key found at ~/.ssh/id_rsa.pub. Exiting."
-  echo "Generate one with: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''"
-  exit 1
+  echo "No SSH public key found at ~/.ssh/id_rsa.pub. Creating one."
+  # echo "Generate one with: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''"
+  ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''
+  # exit 1
 fi
 
 # Copy the SSH public key to the instance
@@ -33,4 +34,4 @@ echo "   Wait for console output to appear."
 echo "Exit with Enter ~."
 echo
 
-ssh -i ~/.ssh/id_rsa "${INSTANCE_ID}.port0@serial-console.ec2-instance-connect.eu-north-1.aws"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${INSTANCE_ID}.port0@serial-console.ec2-instance-connect.eu-north-1.aws"

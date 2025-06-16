@@ -24,3 +24,9 @@ Deploy Check Point Management Server and wait until it is ready:
 make cpman
 ```
 
+You can monitor deployment progress with serial line console of new instance:
+```shell
+make cpman-serial
+```
+
+Exit with key sequence `Enter` and then `~.`.

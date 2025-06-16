@@ -20,11 +20,12 @@ fi
 
 echo "Instance ID for cluster-Member-${MEMBER_UPERCASE}: $INSTANCE_ID"
 
-# if no ~/.ssh/id_rsa.pub, exit
+# if no ~/.ssh/id_rsa.pub, fix it
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
-  echo "No SSH public key found at ~/.ssh/id_rsa.pub. Exiting."
-  echo "Generate one with: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''"
-  exit 1
+  echo "No SSH public key found at ~/.ssh/id_rsa.pub. Creating one."
+  # echo "Generate one with: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''"
+  ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''
+  # exit 1
 fi
 
 # Copy the SSH public key to the instance
