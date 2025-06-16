@@ -19,6 +19,7 @@ Bring AWS credentials into environment variables:
 ```shell
 export AWS_ACCESS_KEY_ID="your_access_key_id"
 export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
+# we have prepared lab in
 export AWS_DEFAULT_REGION="eu-north-1" 
 ```
 
@@ -38,3 +39,11 @@ Later SSH will be possible. One can wait for SSH to be available using:
 ```shell
 while true; do make cpman-ssh; sleep 5; done
 ```
+
+## Reference
+
+| Command             | Description                                                      |
+|---------------------|------------------------------------------------------------------|
+| `make cpman`        | Deploys the Check Point Management Server                        |
+| `make cpman-serial` | Monitors deployment progress via the serial line console         |
+| `make cpman-ssh`    | Attempts to SSH into the Check Point Management Server instance  |

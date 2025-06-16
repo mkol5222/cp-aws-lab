@@ -17,6 +17,9 @@ cpman-ssh:
 	./scripts/cpman-ssh.sh
 cpman-pass:
 	./scripts/cpman-pass.sh
+cpman-wait:
+	./scripts/cpman-wait-for-api.sh
+	
 
 cluster: cluster-up cluster-topo
 cluster-up:
