@@ -10,6 +10,8 @@ Repository to demonstrate CloudGuard NS deployment automation into AWS using Ter
 
 ## Instructions
 
+### Management Server
+
 Open project in [Codespace](https://github.com/codespaces/new?repo=mkol5222/cp-aws-lab) or localy in DevContainer and continue.
 This environment already has all required tools like `terraform`, AWS CLI installed.
 
@@ -41,6 +43,52 @@ Later SSH will be possible. One can wait for SSH to be available using:
 ```shell
 while true; do make cpman-ssh; sleep 5; done
 ```
+
+Best strategy is to wait for Mangement API to be ready and then retrieve IP and password for the Management Server to connect using SmartConsole R81.20:
+```shell
+# wait for Management API to be ready
+make cpman-wait
+# retrieve IP and password
+make cpman-pass
+```
+
+## Gateway Cluster (single AZ)
+
+Check Point CloudGuard NS cluster is defined in [`cluster/02-cluster/cluster.tf`](./cluster/02-cluster/cluster.tf) file based on usage instructions from relevant Terraform module [README file](https://github.com/CheckPointSW/terraform-aws-cloudguard-network-security/tree/master/modules/cluster#usage)
+
+Deploy Check Point Gateway Cluster and wait until it is ready:
+```shell
+# start deployment
+make cluster
+# check if Member A is read
+make cluster-serial-a
+# check if Member B is ready
+make cluster-serial-b
+# reminder: serial console can be exited with key sequence `Enter` and then `~.`
+
+# IMPORTANT: continue only when both members are ready and you are able to SSH into them
+make cluster-ssh-a
+make cluster-ssh-b
+```
+
+Once instances are ready, we need to add them to Security Management Server.
+This can be automated by `mgmt_cli` command for management CLI doing `add simple-cluster` API operation.
+```shell
+# fetch topology and create command
+make cluster-topo
+# login to Management Server to run mgmt_cli command
+#   ONCE BOTH MEMBERS ARE READY AND REACHAEBLE OVER NETWORK (= you can SSH into them)
+make cpman-ssh
+
+```
+
+Next review policy in SmartConsole R81.20 and publish it to the cluster.
+
+This is how you can text connectivity through cluster to the Internet from provided text Linux EC2 instance:
+```shell
+make cluster-linux-serial
+```
+
 
 ## Reference
 

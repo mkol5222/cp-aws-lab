@@ -76,7 +76,8 @@ echo "Cluster VIP Public IP: $VIP_PUB"
 echo "Cluster IP ${VIP_ETH0} (eth0) and $VIP_ETH1 (eth1)"
 echo
 
- 
+#     send-logs-to-server cpman-pub \
+
 cat <<EOF
 mgmt_cli -r true add simple-cluster name "clu"\
     color "pink"\
@@ -118,7 +119,6 @@ mgmt_cli -r true add simple-cluster name "clu"\
     members.2.interfaces.2.name "eth1"\
     members.2.interfaces.2.ip-address "${HA2_ETH1}"\
     members.2.interfaces.2.network-mask "255.255.255.0"\
-    send-logs-to-server cpman-pub \
     nat-hide-internal-interfaces true \
     --format json
 EOF
