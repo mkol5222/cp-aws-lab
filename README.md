@@ -4,7 +4,8 @@
 Repository to demonstrate CloudGuard NS deployment automation into AWS using Terraform.
 
 ## Building blocks
-- [Terraform](https://www.terraform.io/) - Infrastructure as Code tool to deploy resources in AWS.
+- [AWS account](https://aws.amazon.com/) with neccessary permissions to deploy resources.
+- [Terraform](https://www.terraform.io/) - Infrastructure as Code tool to deploy resources in AWS and manage CP policy.
 - [Check Point Terraform Modules](https://github.com/CheckPointSW/terraform-aws-cloudguard-network-security) for various CloudGuatd NS deployments in AWS
 
 ## Instructions
@@ -30,3 +31,8 @@ make cpman-serial
 ```
 
 Exit with key sequence `Enter` and then `~.`.
+
+Later SSH will be possible. One can wait for SSH to be available using:
+```shell
+while true; do make cpman-ssh; sleep 5; done
+```
