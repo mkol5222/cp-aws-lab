@@ -54,3 +54,8 @@ cluster-wait-a:
 	./scripts/cluster-wait-for-sic.sh a
 cluster-wait-b:
 	./scripts/cluster-wait-for-sic.sh b
+
+policy: policy-up
+
+policy-up:
+	./scripts/policy-up.sh
