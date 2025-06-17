@@ -39,10 +39,6 @@ terraform.rc
 secrets/
 standalone/aws-lab.pem
 
-sid.json
-policy/sid.json
+
 policy/sid.json
 policy/fingerprints.json
-policy/sid.json
-policy/sid.json
-policy/sid.json
