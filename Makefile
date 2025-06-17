@@ -60,6 +60,7 @@ policy: policy-up
 policy-up:
 	./scripts/policy-up.sh
 
+asg: asg-up
 asg-up:
 	./scripts/asg-up.sh
 asg-down:
