@@ -17,7 +17,7 @@ echo
 
 echo "Trying SSH connection to ${IP_ADDRESS} with key ./secrets/cluster-keypair.pem"
 REST_OF_ARGS="${@:2}"
-ssh -i ./secrets/cluster-keypair.pem admin@"$IP_ADDRESS" -o StrictHostKeyChecking=no fw stat
+timeout 5 ssh -i ./secrets/cluster-keypair.pem admin@"$IP_ADDRESS" -o StrictHostKeyChecking=no fw stat
 if [ $? -ne 0 ]; then
   echo "SSH connection failed. Please check your instance and network settings."
   exit 1
