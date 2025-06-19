@@ -8,6 +8,10 @@ Repository to demonstrate CloudGuard NS deployment automation into AWS using Ter
 - [Terraform](https://www.terraform.io/) - Infrastructure as Code tool to deploy resources in AWS and manage CP policy.
 - [Check Point Terraform Modules](https://github.com/CheckPointSW/terraform-aws-cloudguard-network-security) for various CloudGuatd NS deployments in AWS
 
+### Diagram
+
+![alt text](diagram-cpman-cluster.png)
+
 ## Instructions
 
 ### Management Server
