@@ -52,13 +52,16 @@ HA1_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterface
 # VIP_ETH0=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[1].PrivateIpAddresses[1].PrivateIpAddress')
 # cluster IP external
 VIP_ETH0=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member A external")| .PrivateIpAddresses[]| select(.Primary == false)|.PrivateIpAddress')
+VIP_ETH0_B=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member B external")| .PrivateIpAddresses[]| select(.Primary == false)|.PrivateIpAddress')
 
 # VIP_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[0].PrivateIpAddresses[1].PrivateIpAddress')
 # cluster IP internal
 VIP_ETH1=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member A internal")| .PrivateIpAddresses[]| select(.Primary == false)|.PrivateIpAddress')
+VIP_ETH1_B=$(echo "$GWLINES" | grep cluster-Member-A | jq -c -r '.NetworkInterfaces[] | select(.Description=="Member B internal")| .PrivateIpAddresses[]| select(.Primary == false)|.PrivateIpAddress')
 
 echo "node A Public IP: $HA1_ETH0_PUB"
 echo "node A Private IP: $HA1_ETH0 (eth0) and $HA1_ETH1 (eth1)"
+
 
 
 # member IP 
@@ -97,10 +100,14 @@ echo
 echo "Cluster VIP Public IP: $VIP_PUB"
 echo "Cluster IP ${VIP_ETH0} (eth0) and $VIP_ETH1 (eth1)"
 echo
+echo "node B Cluster IP: $VIP_ETH0_B (eth0) and $VIP_ETH0_B (eth1)"
+echo 
 
 #     send-logs-to-server cpman-pub \
 
 cat <<EOF
+mgmt_cli -r true add host name "localhost" ipv4-address "127.0.0.1" color "blue" ignore-warnings true
+
 mgmt_cli -r true add simple-cluster name "clu"\
     color "pink"\
     version "R81.20"\
@@ -142,7 +149,18 @@ mgmt_cli -r true add simple-cluster name "clu"\
     members.2.interfaces.2.ip-address "${HA2_ETH1}"\
     members.2.interfaces.2.network-mask "255.255.255.0"\
     nat-hide-internal-interfaces true \
+    identity-awareness true \
+    identity-awareness-settings.identity-collector true \
+    identity-awareness-settings.identity-collector-settings.authorized-clients.client localhost \
+    identity-awareness-settings.identity-collector-settings.authorized-clients.client-secret "cnienfrfeinueribf" \
     --format json
+
+mgmt_cli -r true \
+  set simple-cluster \
+  name "clu" \
+  identity-awareness-settings.identity-web-api true \
+  identity-awareness-settings.identity-web-api-settings.authorized-clients.client "localhost" \
+  identity-awareness-settings.identity-web-api-settings.authorized-clients.client-secret "cnienfrfeinueribf" 
 EOF
 
 echo

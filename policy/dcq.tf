@@ -29,3 +29,23 @@ resource "checkpoint_management_data_center_query" "allSGs" {
     values   = ["Security Group"]
   }
 }
+
+resource "checkpoint_management_data_center_query" "app_linux1" {
+  name         = "app_linux1"
+  data_centers = [checkpoint_management_aws_data_center_server.aws_dc.name]
+  query_rules {
+    key_type = "predefined"
+    key      = "type-in-data-center"
+    values   = ["Instance"]
+  }
+    query_rules {
+    key_type = "tag"
+    key      = "app"
+    values   = ["linux1"]
+  }
+#   query_rules {
+#     key_type = "predefined"
+#     key      = "name-in-data-center"
+#     values   = ["cpman_SecurityGroup"]
+#   }
+}

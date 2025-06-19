@@ -70,6 +70,8 @@ resource "aws_instance" "ubuntu" {
   tags = {
     Name        = "linux"
     Environment = "Development"
+    app = "linux1"
+    vendor = "canonical"
   }
 
   user_data = <<-EOF
