@@ -23,10 +23,13 @@ Consider forking this repo [`mkol5222/cp-aws-lab`](https://github.com/mkol5222/c
 
 Bring AWS credentials into environment variables:
 ```shell
+# consider saving to ~/.envrc
 export AWS_ACCESS_KEY_ID="your_access_key_id"
 export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
-# we have prepared lab in
-export AWS_DEFAULT_REGION="eu-north-1" 
+# ...
+# we have prepared lab in eu-north-1 - hardcoded
+export AWS_DEFAULT_REGION="eu-north-1"
+export AWS_REGION="eu-north-1" 
 ```
 
 Maagement server deployment is defined in [`managememt/management.tf`](./management/management.tf) file based on usage instructions from module's [README file](https://github.com/CheckPointSW/terraform-aws-cloudguard-network-security/tree/master/modules/management#usage).
