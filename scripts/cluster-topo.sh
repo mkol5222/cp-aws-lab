@@ -111,7 +111,7 @@ mgmt_cli -r true add host name "localhost" ipv4-address "127.0.0.1" color "blue"
 mgmt_cli -r true add simple-cluster name "clu"\
     color "pink"\
     version "R81.20"\
-    ip-address "${VIP_ETH0}"\
+    ip-address "${VIP_PUB}"\
     os-name "Gaia"\
     cluster-mode "cluster-xl-ha"\
     firewall true\

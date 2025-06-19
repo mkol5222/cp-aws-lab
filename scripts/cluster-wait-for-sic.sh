@@ -17,7 +17,8 @@ echo
 
 echo "Trying SSH connection to ${IP_ADDRESS} with key ./secrets/cluster-keypair.pem"
 REST_OF_ARGS="${@:2}"
-timeout 5 ssh -i ./secrets/cluster-keypair.pem admin@"$IP_ADDRESS" -o StrictHostKeyChecking=no fw stat
+# prevent checking fingerprint by use of /dev/null in -o UserKnownHostsFile=/dev/null
+timeout 5 ssh -i ./secrets/cluster-keypair.pem admin@"$IP_ADDRESS" -o StrictHostKeyChecking=no  -o UserKnownHostsFile=/dev/null fw stat
 if [ $? -ne 0 ]; then
   echo "SSH connection failed. Please check your instance and network settings."
   exit 1
