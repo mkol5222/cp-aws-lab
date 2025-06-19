@@ -10,7 +10,7 @@ cpman-serial:
 cpman-down:
 	./scripts/cpman-down.sh
 
-cpman: cpman-up cpman-wait cpman-pass
+cpman: cpman-up cpman-wait policy cpman-pass
 cpman-up:
 	./scripts/cpman-up.sh
 cpman-ssh:
