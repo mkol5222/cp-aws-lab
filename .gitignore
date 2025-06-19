@@ -42,3 +42,4 @@ standalone/aws-lab.pem
 
 policy/sid.json
 policy/fingerprints.json
+.envrc
