@@ -144,3 +144,9 @@ mgmt_cli -r true add simple-cluster name "clu"\
     nat-hide-internal-interfaces true \
     --format json
 EOF
+
+echo
+echo "Install policy with:"
+echo "   mgmt_cli install-policy policy-package "cluster" access true threat-prevention true targets.1 "clu"  --format json -r true"
+echo
+
