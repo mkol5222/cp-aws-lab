@@ -41,6 +41,37 @@ resource "checkpoint_management_access_rule" "from_net_linux" {
   }
 }
 
+resource "checkpoint_management_access_rule" "to_feeds" {
+  layer = "${checkpoint_management_package.cluster.name} Network"
+  
+  position = { below = checkpoint_management_access_rule.from_net_linux.id }
+  name     = "to feeds"
+
+  source = [checkpoint_management_network.linux.id]
+
+  enabled = true
+
+  destination        = [checkpoint_management_network_feed.feedME.id, checkpoint_management_network_feed.quiccloud.id]
+  destination_negate = false
+
+  service        = ["Any"]
+  service_negate = false
+
+  action = "Accept"
+  action_settings = {
+    enable_identity_captive_portal = false
+  }
+
+  track = {
+    accounting              = false
+    alert                   = "none"
+    enable_firewall_session = true
+    per_connection          = true
+    per_session             = true
+    type                    = "Log"
+  }
+}
+
 resource "checkpoint_management_access_rule" "from_app_linux1" {
   layer = "${checkpoint_management_package.cluster.name} Network"
   
