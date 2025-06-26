@@ -1,6 +1,6 @@
 resource "checkpoint_management_host" "example" {
   name         = "tf-host"
-  ipv4_address = ""
+  ipv4_address = "192.0.2.20"
   color        = "red"
   tags         = ["tag1", "tag2", "madeByTf"]
   comments     = "This is a new host"
