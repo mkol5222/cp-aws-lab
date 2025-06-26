@@ -1,6 +1,6 @@
 
 all:
-	echo "not implemented"
+	echo "not implemented yes"
 	
 .PHONY: all
 
