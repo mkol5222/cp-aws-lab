@@ -4,4 +4,5 @@ resource "checkpoint_management_aws_data_center_server" "aws_dc" {
   #   access_key_id          = "MY-KEY-ID"
   #   secret_access_key      = "MY-SECRET-KEY"
   region = "eu-north-1"
+  ignore_warnings = true
 }

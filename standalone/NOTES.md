@@ -1,5 +1,6 @@
 ```shell
 
+ssh admin@13.49.25.132
 
 wsl openssl passwd -5
 
@@ -51,4 +52,18 @@ aws ec2-instance-connect ssh \
   --instance-id i-00ebe271d7892fa64 \
   --region eu-north-1
 
+# Check password hash
+HASH='$5$DKTe6QQSZHMos7EN$taoikN3GtQTPnCqkCV7v.PNqzyFbI4HaAvwlBkLlo64'
+PASS='candidate_password'
+
+if [ "$(openssl passwd -5 -salt "$(echo "$HASH" | cut -d'$' -f3,4)" "$PASS")" = "$HASH" ]; then
+  echo "✅ Password matches"
+else
+  echo "❌ Password does NOT match"
+fi
+
+
+mgmt_cli -r true set api-settings accepted-api-calls-from "All IP addresses" --domain 'System Data'
+echo "Restarting API Server"
+api restart
 ```
