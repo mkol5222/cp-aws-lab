@@ -9,6 +9,21 @@ aws ec2 describe-instances \
   --output text
 # i-08f621ad4b613ecae
 
+
+aws ec2 stop-instances --instance-ids i-08f621ad4b613ecae
+
+This will put the instance into the stopping → stopped state. You can check progress with:
+
+aws ec2 describe-instances \
+  --instance-ids i-08f621ad4b613ecae \
+  --query "Reservations[].Instances[].State.Name" \
+  --output text
+
+
+aws ec2 start-instances --instance-ids i-08f621ad4b613ecae
+while true; do ssh -q admin@13.49.25.132; sleep 2; done
+ssh -q admin@13.49.25.132 api status | grep read
+
  terraform state show module.cme_role.aws_iam_instance_profile.iam_instance_profile
 # module.cme_role.aws_iam_instance_profile.iam_instance_profile:
 resource "aws_iam_instance_profile" "iam_instance_profile" {
