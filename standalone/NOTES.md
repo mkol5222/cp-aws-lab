@@ -22,6 +22,7 @@ aws ec2 describe-instances \
 
 aws ec2 start-instances --instance-ids i-08f621ad4b613ecae
 while true; do ssh -q admin@13.49.25.132; sleep 2; done
+watch -d 'api status | grep read'
 ssh -q admin@13.49.25.132 api status | grep read
 
  terraform state show module.cme_role.aws_iam_instance_profile.iam_instance_profile
