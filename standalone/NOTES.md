@@ -12,7 +12,7 @@ aws ec2 describe-instances \
 
 aws ec2 stop-instances --instance-ids i-08f621ad4b613ecae
 
-This will put the instance into the stopping → stopped state. You can check progress with:
+# This will put the instance into the stopping → stopped state. You can check progress with:
 
 aws ec2 describe-instances \
   --instance-ids i-08f621ad4b613ecae \
