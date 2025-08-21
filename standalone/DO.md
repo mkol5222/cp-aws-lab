@@ -134,5 +134,8 @@ cat $FWDIR/database/dynamic_objects.db
 # CA bundle 
 #   https://support.checkpoint.com/results/sk/sk183354
 
+# scheduled updates
+cpd_sched_config print
+
 # Feed scale https://support.checkpoint.com/search#q=PRJ-54499
 ```
