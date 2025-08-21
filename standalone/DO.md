@@ -138,4 +138,8 @@ cat $FWDIR/database/dynamic_objects.db
 cpd_sched_config print
 
 # Feed scale https://support.checkpoint.com/search#q=PRJ-54499
+
+# logs
+fw log -p -n | grep efo_
+fw log -p -n | grep efo_ | tr \; \\n
 ```

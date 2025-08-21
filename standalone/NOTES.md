@@ -2,6 +2,41 @@
 
 ssh admin@13.49.25.132
 
+
+aws ec2 describe-instances \
+  --filters "Name=tag:Name,Values=standalone-cp" \
+  --query "Reservations[].Instances[].InstanceId" \
+  --output text
+# i-08f621ad4b613ecae
+
+ terraform state show module.cme_role.aws_iam_instance_profile.iam_instance_profile
+# module.cme_role.aws_iam_instance_profile.iam_instance_profile:
+resource "aws_iam_instance_profile" "iam_instance_profile" {
+    arn         = "arn:aws:iam::141317330670:instance-profile/terraform-20250821132754281800000004"
+    create_date = "2025-08-21T13:27:54Z"
+    id          = "terraform-20250821132754281800000004"
+    name        = "terraform-20250821132754281800000004"
+    name_prefix = "terraform-"
+    path        = "/"
+    role        = "terraform-20250821132753284200000002"
+    tags        = {}
+    tags_all    = {}
+    unique_id   = "AIPASBZZLK3XIZBYL5OLW"
+}
+
+
+ aws iam list-instance-profiles --query "InstanceProfiles[].InstanceProfileName" --output text
+terraform-20250821132754281800000004
+
+aws ec2 associate-iam-instance-profile \
+  --instance-id i-08f621ad4b613ecae \
+  --iam-instance-profile Name=terraform-20250821132754281800000004
+
+
+  aws ec2 describe-instances \
+    --instance-id i-08f621ad4b613ecae \
+    --query "Reservations[].Instances[].IamInstanceProfile"
+
 wsl openssl passwd -5
 
 terraform init
