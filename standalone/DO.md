@@ -16,6 +16,10 @@ dynamic_objects -l
 
 # new object
 dynamic_objects -n LocalGatewayExternal
+
+# not exist on management server, but can be added
+mgmt_cli -r true  add dynamic-object name MailServer
+
 # add IP/range
 dynamic_objects -o LocalGatewayExternal -r 10.0.1.238 10.0.1.238 -a
 dynamic_objects -l
@@ -50,6 +54,15 @@ dynamic_objects -ip 10.0.1.238
 curl_cli -k -OL https://github.com/mkol5222/pub.filex/raw/refs/heads/cpfeedman/doip; chmod +x ./doip; 
 # test
 dynamic_objects -l | ./doip
+dynamic_objects -l | ./doip | grep LocalGatewayExternal
+dynamic_objects -l | ./doip | grep 10.0.1.238
+
+# file 
+dynamic_objects -l | tee /tmp/do.txt
+cat /tmp/do.txt
+./doip /tmp/do.txt | grep 238
+
+
 
 # grep for IP
 dynamic_objects -l | ./doip | grep 10.0.1.238
@@ -121,6 +134,7 @@ curl_cli -k -s https://feed-serv.deno.dev/ip
 curl_cli -k -s https://feed-serv.deno.dev/ip | jq .
 # IPs only
 curl_cli -k -s https://feed-serv.deno.dev/ip | jq -r '.[].ip'
+curl_cli -k -s https://feed-serv.deno.dev/ip | jq -r '.[].ip' | grep 127.0.0.1
 
 # add IP
 curl_cli -k -s -X PUT https://feed-serv.deno.dev/ip/127.0.0.1 | jq .
@@ -161,6 +175,7 @@ cat $FWDIR/database/dynamic_objects.db
 # feed update schedule
 
 # CA checks for feeds
+# export FEEDNAME=quic_cloud
 # cpprod_util CPPROD_SetValue FW1 EFO_SKIP_SSL_VALIDATION_$FEEDNAME 1 1 1" to enable 
 # cpprod_util CPPROD_SetValue FW1 EFO_SKIP_SSL_VALIDATION_$FEEDNAME 1 0 1" to disable
 # CA bundle 
