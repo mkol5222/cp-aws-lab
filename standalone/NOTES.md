@@ -1,30 +1,39 @@
 ```shell
 
-ssh admin@13.49.25.132
 
-
-aws ec2 describe-instances \
+# look for EC2 instance named standalone-cp
+SCP_ID=$(aws ec2 describe-instances \
   --filters "Name=tag:Name,Values=standalone-cp" \
   --query "Reservations[].Instances[].InstanceId" \
-  --output text
-# i-08f621ad4b613ecae
+  --output text)
+
+# start it
+aws ec2 start-instances --instance-ids $SCP_ID
 
 
-aws ec2 stop-instances --instance-ids i-08f621ad4b613ecae
+SCP_STATE=$(aws ec2 describe-instances \
+  --instance-ids $SCP_ID \
+  --query "Reservations[].Instances[].State.Name" \
+  --output text)
+echo $SCP_STATE
+
+SCP_IP=$(aws ec2 describe-instances \
+--instance-ids $SCP_ID \
+--query "Reservations[].Instances[].PublicIpAddress" \
+--output text)
+
+timeout 3 ssh -q admin@$SCP_IP hostname -i
+
+aws ec2 stop-instances --instance-ids $SCP_ID
 
 # This will put the instance into the stopping → stopped state. You can check progress with:
 
-aws ec2 describe-instances \
-  --instance-ids i-08f621ad4b613ecae \
-  --query "Reservations[].Instances[].State.Name" \
-  --output text
-
-
-aws ec2 start-instances --instance-ids i-08f621ad4b613ecae
-while true; do ssh -q admin@13.49.25.132; sleep 2; done
+while true; do ssh -q admin@$SCP_IP; sleep 2; done
 watch -d 'api status | grep read'
-ssh -q admin@13.49.25.132 api status | grep read
+ssh -q admin@$SCP_IP api status | grep read
 
+
+######################
  terraform state show module.cme_role.aws_iam_instance_profile.iam_instance_profile
 # module.cme_role.aws_iam_instance_profile.iam_instance_profile:
 resource "aws_iam_instance_profile" "iam_instance_profile" {

@@ -8,6 +8,7 @@ dynamic_objects -l
 
 # help
 dynamic_objects -h
+# DO Overview SK https://support.checkpoint.com/results/sk/sk116367
 
 # our eth0 10.0.1.238
 
@@ -69,8 +70,20 @@ fw log -p -n | grep blocklist
 # readable
 fw log -p -n | grep 'dynamic object:' | tr \; \\n
 
+# Generic Data Center Objects are DO too (vs CloudGuard Controller objects and DCQ)
+# https://support.checkpoint.com/results/sk/sk167210
+# https://sc1.checkpoint.com/documents/R81.20/WebAdminGuides/EN/CP_R81.20_SecurityManagement_AdminGuide/Content/Topics-SECMG/Generic-DC-Object.htm
+# support file, but always in CP format
+
 # network feeds - they are DO too (EFO - external feed objects)
+# https://my.pingdom.com/probes/ipv4
+# demo guide https://sc1.checkpoint.com/documents/Sales_tools/DemoPoint/Quantum_R81.20/Topics/Network_Feed_Objects.htm  
+# supports processing of flat list or JSON, but does not support local file
 dynamic_objects -efo_show
+
+# limitations
+# feed https://sc1.checkpoint.com/documents/R82/WebAdminGuides/EN/CP_R82_SecurityManagement_AdminGuide/Content/Topics-SECMG/Network_Feed.htm
+# Generic DC 
 
 # expand ranges
 dynamic_objects -efo_show | ./doip
@@ -142,4 +155,12 @@ cpd_sched_config print
 # logs
 fw log -p -n | grep efo_
 fw log -p -n | grep efo_ | tr \; \\n
+
+
+# list all OBJECT NAMES
+dynamic_objects -l 
+dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
+dynamic_objects -efo_show | grep -Po "(?<=^object name : )(.*)$"
+
+# DANGER: delete all DO?
 ```

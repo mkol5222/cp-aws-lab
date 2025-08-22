@@ -65,3 +65,26 @@ asg-up:
 	./scripts/asg-up.sh
 asg-down:
 	./scripts/asg-down.sh
+
+
+scp-wait:
+	./scripts/scp-wait.sh
+
+scp-start:
+	./scripts/scp-start.sh
+
+scp-stop:
+	./scripts/scp-stop.sh
+
+scp-serial:
+	./scripts/scp-serial.sh
+scp-api:
+	./scripts/scp-wait-api.sh
+scp-policy:
+	./scripts/scp-policy.sh
+scp-pass:
+	./scripts/scp-pass.sh
+scp-ssh:
+	./scripts/scp-ssh.sh
+
+	
