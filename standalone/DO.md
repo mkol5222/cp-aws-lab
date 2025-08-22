@@ -26,7 +26,7 @@ dynamic_objects -l
 # -u overrides prev state
 dynamic_objects -u multi -r 192.168.1.0 192.168.1.255
 dynamic_objects -l
-# show specific
+# show specific DO only
 dynamic_objects -lo LocalGatewayExternal
 
 # lookup IP
@@ -66,7 +66,9 @@ dynamic_objects -o blocklist -r 10.0.1.0 10.0.1.100 -d
 dynamic_objects -l | tee /tmp/do2.txt
 
 # compare
+diff -u /tmp/do1.txt /tmp/do2.txt
 ./doip /tmp/do1.txt /tmp/do2.txt
+./doip /tmp/do1.txt /tmp/do2.txt | less  
 cat /tmp/do1.txt
 
 # delete object
@@ -88,6 +90,7 @@ fw log -p -n | grep 'dynamic object:' | tr \; \\n
 # demo guide https://sc1.checkpoint.com/documents/Sales_tools/DemoPoint/Quantum_R81.20/Topics/Network_Feed_Objects.htm  
 # supports processing of flat list or JSON, but does not support local file
 dynamic_objects -efo_show
+# see policy and SmartConsole 
 
 # limitations
 # feed https://sc1.checkpoint.com/documents/R82/WebAdminGuides/EN/CP_R82_SecurityManagement_AdminGuide/Content/Topics-SECMG/Network_Feed.htm
@@ -99,13 +102,13 @@ dynamic_objects -efo_show | ./doip
 # trigget feed update
 dynamic_objects -efo_update feed_serv_ip
 
-# look inside
+# look inside GATEWAY SIDE (client)
 TDERROR_ALL_ALL=1 dynamic_objects -efo_update feed_serv_ip
 # e.g. certificates
 TDERROR_ALL_ALL=1 dynamic_objects -efo_update feed_serv_ip 2>&1 | grep -i cert
 TDERROR_ALL_ALL=1 dynamic_objects -efo_update feed_serv_ip 2>&1 | grep -i bundle
 
-# training Network Feed
+# training Network Feed - SERVER SIDE
 curl_cli -k -s https://feed-serv.deno.dev/ip
 # formatted
 curl_cli -k -s https://feed-serv.deno.dev/ip | jq .
@@ -139,6 +142,7 @@ dynamic_objects -efo_show | ./doip | grep feed_serv_ip | grep 127.0.0.1
 while true; do ./doip <(dynamic_objects -efo_show) <(sleep 2;dynamic_objects -efo_show); done
 
 # 2nd terminal - drive some changes
+make scp-ssh
 while true; do curl_cli -k -s -X PUT https://feed-serv.deno.dev/ip/127.0.0.1 | jq .; dynamic_objects -efo_update feed_serv_ip; sleep 5; curl_cli -k -s -X DELETE https://feed-serv.deno.dev/ip/127.0.0.1 | jq .; dynamic_objects -efo_update feed_serv_ip; sleep 3; done
 
 
@@ -181,6 +185,13 @@ dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$" | while read DO; do
         echo "Deleting $DO"
         dynamic_objects -do "$DO"
     fi
+done
+dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
+
+### DELETE ALL DO
+dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$" | while read DO; do
+        echo "Deleting $DO"
+        dynamic_objects -do "$DO"
 done
 dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
 
