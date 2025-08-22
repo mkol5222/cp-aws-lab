@@ -1,16 +1,18 @@
 # Dynamic Objects lab
 
 ```bash
-ssh admin@13.49.25.132
-
-# regular DO
-dynamic_objects -l
+# ssh admin@13.49.25.132
+make scp-ssh
 
 # help
 dynamic_objects -h
 # DO Overview SK https://support.checkpoint.com/results/sk/sk116367
 
-# our eth0 10.0.1.238
+# regular DO
+dynamic_objects -l
+
+
+# our eth0 -e.g. 10.0.1.238
 
 # new object
 dynamic_objects -n LocalGatewayExternal
@@ -311,7 +313,10 @@ fw log -n -p | grep -i Login | grep -i 'ProductName: Identity Awareness' | tr \;
 
 pep s u a
 pdp m a | grep app_linux1
+# pep show user query cid <IP address>
+# pep show user query cid 10.0.2.85
 pdp m a | grep Groups
+
 #  Groups: Name=standalone-cp;app_linux1;vpc-03065f12b0afa1cb7
 
 # remove tag later
@@ -325,3 +330,10 @@ pep s u a
 pdp m a | grep app_linux1
 pdp m a | grep Groups
 # Groups: Name=standalone-cp;vpc-03065f12b0afa1cb7
+
+less $FWDIR/log/cloud_proxy.elg
+
+# ATRG https://support.checkpoint.com/results/sk/sk115657
+
+# $FWDIR/conf/vsec_controller_targets_data.set
+
