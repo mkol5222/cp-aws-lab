@@ -162,5 +162,18 @@ dynamic_objects -l
 dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
 dynamic_objects -efo_show | grep -Po "(?<=^object name : )(.*)$"
 
-# DANGER: delete all DO?
+# create 20 dynamic objects
+for i in {1..20}; do dynamic_objects -n "DO_demo_$i"; done
+dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
+
+# DANGER: delete all/some DO?
+dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$" | while read DO; do
+    # match prefix DO_demo_
+    if [[ $DO == DO_demo_* ]]; then
+        echo "Deleting $DO"
+        dynamic_objects -do "$DO"
+    fi
+done
+dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
+
 ```
