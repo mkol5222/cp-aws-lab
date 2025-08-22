@@ -4,7 +4,7 @@ set -euo pipefail
 
 # look for EC2 instance named standalone-cp
 SCP_ID=$(aws ec2 describe-instances \
-  --filters "Name=tag:Name,Values=standalone-cp" \
+  --filters "Name=tag:Name,Values=standalone-cp" "Name=instance-state-name,Values=pending,running,stopping,stopped,shutting-down" \
   --query "Reservations[].Instances[].InstanceId" \
   --output text)
 

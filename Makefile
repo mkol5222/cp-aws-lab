@@ -86,5 +86,7 @@ scp-pass:
 	./scripts/scp-pass.sh
 scp-ssh:
 	./scripts/scp-ssh.sh
-
-	
+scp-down:
+	./scripts/scp-down.sh
+scp-up:
+	./scripts/scp-up.sh

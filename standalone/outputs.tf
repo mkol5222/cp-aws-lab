@@ -9,3 +9,7 @@ output "ssh" {
 output "url" {
     value = module.standalone_cp.standalone_url
 }
+
+output "instanceId" {
+    value = module.standalone_cp.standalone_instance_id
+}
