@@ -54,22 +54,29 @@ dynamic_objects -l | ./doip
 # grep for IP
 dynamic_objects -l | ./doip | grep 10.0.1.238
 
+# make it smaller
+dynamic_objects -l
+dynamic_objects -do multi
+dynamic_objects -u blocklist -r 10.0.0.1 10.0.0.10
+dynamic_objects -l | ./doip
 # compare
 dynamic_objects -l | tee /tmp/do1.txt
 
 # some changes
-dynamic_objects -o blocklist -r 172.16.0.0 172.16.255.255 -a
+dynamic_objects -o blocklist -r 172.16.0.0 172.16.0.2 -a
 # one can also delete sub-ranges
-dynamic_objects -o blocklist -r 10.0.1.0 10.0.1.100 -d
+dynamic_objects -o blocklist -r 10.0.0.1 10.0.0.5 -d
 
 # final state
 dynamic_objects -l | tee /tmp/do2.txt
 
 # compare
 diff -u /tmp/do1.txt /tmp/do2.txt
+# BUG in doip !!!
 ./doip /tmp/do1.txt /tmp/do2.txt
-./doip /tmp/do1.txt /tmp/do2.txt | less  
+ 
 cat /tmp/do1.txt
+cat /tmp/do2.txt
 
 # delete object
 dynamic_objects -do blocklist
