@@ -195,11 +195,12 @@ dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$" | while read DO; do
 done
 dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
 
-### DELETE ALL DO
+### DANGER!!! DELETE ALL DO
 dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$" | while read DO; do
         echo "Deleting $DO"
         dynamic_objects -do "$DO"
 done
+echo
 dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
 
 ### DC objects
