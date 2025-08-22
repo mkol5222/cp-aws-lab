@@ -7,6 +7,9 @@ SCP_ID=$(aws ec2 describe-instances \
   --query "Reservations[].Instances[].InstanceId" \
   --output text)
 
+# set tag app to value linux1 on instance SCP_ID
+aws ec2 create-tags --resources $SCP_ID --tags Key=app,Value=linux1
+
 # start it
 aws ec2 start-instances --instance-ids $SCP_ID
 

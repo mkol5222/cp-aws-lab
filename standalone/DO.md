@@ -290,3 +290,38 @@ if [ $? -eq 0 ] ; then echo "OK" ; else cat /tmp/standalone-cp_ctf_dynobj_respon
 
 # 22/08/25 07:39:13,256  INFO ida.api.IDACpridRequestSenderClient [gateway-updater_standalone-cp]: Response from gw 10.0.1.238 is 'OK'
 ```
+
+```bash
+# modern DC DCQ - IDA based
+pep s u a
+
+# DCQ for tag app=linux1
+# our instance
+SCP_ID=$(aws ec2 describe-instances \
+  --filters "Name=tag:Name,Values=standalone-cp" \
+  --query "Reservations[].Instances[].InstanceId" \
+  --output text)
+
+# set tag app to value linux1 on instance SCP_ID
+aws ec2 create-tags --resources $SCP_ID --tags Key=app,Value=linux1
+
+# log
+fw log -n -p | grep linux1 | grep -i 'ProductName: Identity Awareness' | tr \; \\n
+fw log -n -p | grep -i Login | grep -i 'ProductName: Identity Awareness' | tr \; \\n
+
+pep s u a
+pdp m a | grep app_linux1
+pdp m a | grep Groups
+#  Groups: Name=standalone-cp;app_linux1;vpc-03065f12b0afa1cb7
+
+# remove tag later
+aws ec2 delete-tags --resources $SCP_ID --tags Key=app
+
+# log
+fw log -n -p | grep -i logout | grep -i 'ProductName: Identity Awareness' | tr \; \\n
+
+# IDA state
+pep s u a
+pdp m a | grep app_linux1
+pdp m a | grep Groups
+# Groups: Name=standalone-cp;vpc-03065f12b0afa1cb7
