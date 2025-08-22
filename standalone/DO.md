@@ -176,4 +176,74 @@ dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$" | while read DO; do
 done
 dynamic_objects -l | grep -Po "(?<=^object name : )(.*)$"
 
-```
+### DC objects
+cat << 'EOF' > /var/log/gdcdemo.json
+{
+    "version": "1.0",
+    "description": "Generic Data Center file example",
+    "objects": [
+        {
+            "name": "Object A name",
+            "id": "e7f18b60-f22d-4f42-8dc2-050490ecf6d5",
+            "description": "Example for IPv4 addresses",
+            "ranges": [
+                "91.198.xxx.xxx",
+                "20.0.0.0/24",
+                "10.1.1.2-10.1.1.10"
+            ]
+        },
+        {
+            "name": "Object B name",
+            "id": "a46f02e6-af56-48d2-8bfb-f9e8738f2bd0",
+            "description": "Example for IPv6 addresses",
+            "ranges": [
+                "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+                "0064:ff9b:0000:0000:0000:0000:1234:5678/96",
+                "2001:0db8:85a3:0000:0000:8a2e:2020:0-2001:0db8:85a3:0000:0000:8a2e:2020:5"
+            ]
+        }
+    ]
+}
+EOF
+
+mgmt_cli -r true --format json add data-center-server name gendc type generic url /var/log/gdcdemo.json interval 60
+dynamic_objects -cfo_show
+fw log -n -p | grep gendc | tr \; \\n
+
+less $FWDIR/log/cloud_proxy.elg
+
+# fix JSON
+cat << 'EOF' > /var/log/gdcdemo.json
+{
+    "version": "1.0",
+    "description": "Generic Data Center file example",
+    "objects": [
+        {
+            "name": "Object A name",
+            "id": "e7f18b60-f22d-4f42-8dc2-050490ecf6d5",
+            "description": "Example for IPv4 addresses",
+            "ranges": [
+                "91.198.10.10",
+                "20.0.0.0/24",
+                "10.1.1.2-10.1.1.10"
+            ]
+        },
+        {
+            "name": "Object B name",
+            "id": "a46f02e6-af56-48d2-8bfb-f9e8738f2bd0",
+            "description": "Example for IPv6 addresses",
+            "ranges": [
+                "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+                "0064:ff9b:0000:0000:0000:0000:1234:5678/96",
+                "2001:0db8:85a3:0000:0000:8a2e:2020:0-2001:0db8:85a3:0000:0000:8a2e:2020:5"
+            ]
+        }
+    ]
+}
+EOF
+
+dynamic_objects -cfo_show
+# USED IN POLICY only
+
+# not scheduled like EFOs - CloudGuard CONTROLLER has its own scheduling ($FWDIR/log/cloud_proxy.elg)
+cpd_sched_config print | less
