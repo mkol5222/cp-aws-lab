@@ -16,7 +16,13 @@ dynamic_objects -h
 dynamic_objects -n LocalGatewayExternal
 # add IP/range
 dynamic_objects -o LocalGatewayExternal -r 10.0.1.238 10.0.1.238 -a
+dynamic_objects -l
+# or upsert with more than one range
+dynamic_objects -u multi -r 10.0.0.0 10.0.0.255 172.16.0.0 172.16.255.255
 # show all
+dynamic_objects -l
+# -u overrides prev state
+dynamic_objects -u multi -r 192.168.1.0 192.168.1.255
 dynamic_objects -l
 # show specific
 dynamic_objects -lo LocalGatewayExternal
@@ -206,6 +212,8 @@ cat << 'EOF' > /var/log/gdcdemo.json
 }
 EOF
 
+cat /var/log/gdcdemo.json | jq .
+
 mgmt_cli -r true --format json add data-center-server name gendc type generic url /var/log/gdcdemo.json interval 60
 dynamic_objects -cfo_show
 fw log -n -p | grep gendc | tr \; \\n
@@ -247,3 +255,38 @@ dynamic_objects -cfo_show
 
 # not scheduled like EFOs - CloudGuard CONTROLLER has its own scheduling ($FWDIR/log/cloud_proxy.elg)
 cpd_sched_config print | less
+
+# Gen DC Internals
+cat $FWDIR/database/dynamic_objects.db
+cat $FWDIR/database/dynamic_objects.db | grep CFO
+dynamic_objects -cfo_show
+dynamic_objects -cfo_show | grep object
+
+# vs
+dynamic_objects -efo_show | grep object
+dynamic_objects -l | grep object
+```
+
+```bash
+# GenDC internals
+
+# 22/08/25 07:39:12,935  INFO ida.api.IDACpridRequestSenderClient [gateway-updater_standalone-cp]: Sending update to gw 10.0.1.238: #!/bin/bash 
+
+
+
+
+# CTF Request data begin:
+
+# Initialize request:
+echo "" > /tmp/standalone-cp_ctf_dynobj_commands
+
+# Print Update requests to the commands files:
+echo "dynamic_objects -u CP-CFO-40e0783e-a88d-4071-b552-890d1a7514fe -r 10.1.1.2 10.1.1.10 20.0.0.0 20.0.0.255 91.198.10.10 91.198.10.10 " >> /tmp/standalone-cp_ctf_dynobj_commands
+echo "dynamic_objects -u CP-CFO-41e79301-629a-44a7-8db4-be8e063a397e -r 64:ff9b:0:0:0:0:0:0 64:ff9b:0:0:0:0:ffff:ffff 2001:db8:85a3:0:0:8a2e:370:7334 2001:db8:85a3:0:0:8a2e:370:7334 2001:db8:85a3:0:0:8a2e:2020:0 2001:db8:85a3:0:0:8a2e:2020:5 " >> /tmp/standalone-cp_ctf_dynobj_commands
+
+# Finalize request:
+dynamic_objects -f /tmp/standalone-cp_ctf_dynobj_commands -no_log -cfo >& /tmp/standalone-cp_ctf_dynobj_response
+if [ $? -eq 0 ] ; then echo "OK" ; else cat /tmp/standalone-cp_ctf_dynobj_response ; fi
+
+# 22/08/25 07:39:13,256  INFO ida.api.IDACpridRequestSenderClient [gateway-updater_standalone-cp]: Response from gw 10.0.1.238 is 'OK'
+```
