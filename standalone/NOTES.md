@@ -141,4 +141,14 @@ mgmt_cli -r true set api-settings accepted-api-calls-from "All IP addresses" --d
 echo "Restarting API Server"
 api restart
 
+###
+```shell
+# repeat until successful
+until mgmt_cli -r true set api-settings accepted-api-calls-from "All IP addresses" --domain 'System Data'; do
+  echo "Command failed — retrying in 2s..."
+  sleep 2
+done
+api restart
+echo "✅ API setting applied"
+```
 
