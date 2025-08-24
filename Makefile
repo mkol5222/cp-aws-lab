@@ -90,3 +90,8 @@ scp-down:
 	./scripts/scp-down.sh
 scp-up:
 	./scripts/scp-up.sh
+
+test-aws:
+	aws sts get-caller-identity
+test: test-aws
+

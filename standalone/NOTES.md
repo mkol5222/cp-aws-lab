@@ -126,7 +126,19 @@ else
 fi
 
 
+# add authorized ssh key
+# cat ~/.ssh/id_rsa.pub | ssh -i ~/.ssh/id_rsa admin@$SCP_IP 'cat >> ~/.ssh/authorized_keys'
+cat ~/.ssh/id_rsa.pub | clip.exe
+
+# from clipboard, on SERIAL
+make scp-serial
+# cat | tee -a ~/.ssh/authorized_keys
+exit
+make scp-ssh
+
+# enable API access
 mgmt_cli -r true set api-settings accepted-api-calls-from "All IP addresses" --domain 'System Data'
 echo "Restarting API Server"
 api restart
-```
+
+
