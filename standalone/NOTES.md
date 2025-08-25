@@ -150,5 +150,13 @@ until mgmt_cli -r true set api-settings accepted-api-calls-from "All IP addresse
 done
 api restart
 echo "✅ API setting applied"
-```
 
+
+mgmt_cli -r true \
+  set simple-gateway \
+  name "standalone-cp" \
+  identity-awareness-settings.identity-web-api true \
+  identity-awareness-settings.identity-web-api-settings.authorized-clients.client "localhost" \
+  identity-awareness-settings.identity-web-api-settings.authorized-clients.client-secret "cnienfrfeinueribf" 
+
+mgmt_cli install-policy policy-package "cluster" access true threat-prevention true targets.1 "standalone-cp"  --format json -r true

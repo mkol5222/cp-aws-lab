@@ -24,8 +24,8 @@ if [ "$SCP_STATE" = "stopped" ]; then
   exit 0
 fi
 
-if [ "$SCP_STATE" != "running" ]; then
-  echo "Instance is not running."
+if [ "$SCP_STATE" != "running" ] && [ "$SCP_STATE" != "pending" ]; then
+  echo "Instance is not running or pending."
   exit 0
 fi
 

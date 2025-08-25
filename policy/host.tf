@@ -6,6 +6,15 @@ resource "checkpoint_management_host" "example" {
   comments     = "This is a new host"
 }
 
+
+resource "checkpoint_management_host" "localhost" {
+  name         = "localhost"
+  ipv4_address = "127.0.0.1"
+  color        = "red"
+  tags         = ["madeByTf"]
+  comments     = "local host"
+}
+
 resource "checkpoint_management_host" "example2" {
   name         = "tf-host2"
   ipv4_address = "192.0.2.2"
