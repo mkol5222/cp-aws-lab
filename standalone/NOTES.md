@@ -182,3 +182,28 @@ mgmt_cli logout -s sid.txt
 mgmt_cli -r true --format json show sessions details-level full | jq -c . | grep admin2
 mgmt_cli -r true --format json show sessions details-level full | jq -r '.objects[] | select(.user=="admin2") | [.user, .ip-address, .start-time]'
 mgmt_cli  -r true --format json take-over-session uid "2f5abb91-21c6-42f5-85ef-7ac5f0f56215" disconnect-active-session true  
+
+### all GWS
+
+GW_IPS=$(
+( (mgmt_cli -r true show simple-gateways details-level full limit 100 --format json | jq -r -c '.objects[] | {gw:.name, ip: ."ipv4-address"}'); (mgmt_cli -r true show simple-clusters details-level full limit 100 --format json | jq -r -c '.objects[]."cluster-members"[]| {gw:.name, ip: ."ip-address"}' )) | while read gw; do
+    GW_NAME=$(echo "$gw" | jq -r '.gw')
+    GW_IP=$(echo "$gw" | jq -r '.ip')
+    echo "$GW_IP"
+done
+)
+
+echo $GW_IPS
+for GW_IP in $GW_IPS; do
+   cprid_util -server "$GW_IP" -verbose rexec -rcmd uname -a
+done
+# all feeds/DOs on all gws
+for GW_IP in $GW_IPS; do
+   # cprid_util -server "$GW_IP" -verbose rexec -rcmd uname -a | dynamic_objects -l | grep object
+   cprid_util -server "$GW_IP" -verbose rexec -rcmd uname -a | dynamic_objects -efo_show | grep -Po '(?<=object name : )(.*)' | while read DO; do
+      jq -c -n --arg name "$DO" --arg ip "$GW_IP" '{name: $name, ip: $ip}'
+    done
+done
+
+
+mgmt_cli -r true show simple-gateways details-level full limit 100 --format json | jq -r -c '.objects[] | {gw:.name, ip: ."ipv4-address"}'
