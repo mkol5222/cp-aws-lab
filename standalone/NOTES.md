@@ -160,3 +160,25 @@ mgmt_cli -r true \
   identity-awareness-settings.identity-web-api-settings.authorized-clients.client-secret "cnienfrfeinueribf" 
 
 mgmt_cli install-policy policy-package "cluster" access true threat-prevention true targets.1 "standalone-cp"  --format json -r true
+
+
+mgmt_cli add administrator name "admin3" \
+    authentication-method "api key" \
+    permissions-profile "Super User" \
+    must-change-password false \
+    --domain "System Data" \
+    -r true --format json
+mgmt_cli add-api-key admin-name "admin3" -r true --domain 'System Data' --format json
+
+mgmt_cli -r true install-database targets standalone-cp
+
+mgmt_cli -r true show simple-gateways details-level full --format json | jq .
+mgmt_cli -r true show simple-gateways details-level full --format json | jq -r '.objects[]|[.name,."ipv4-address"]'
+
+mgmt_cli login --api-key "xx==" > sid.txt
+mgmt_cli show hosts -s sid.txt
+mgmt_cli logout -s sid.txt
+
+mgmt_cli -r true --format json show sessions details-level full | jq -c . | grep admin2
+mgmt_cli -r true --format json show sessions details-level full | jq -r '.objects[] | select(.user=="admin2") | [.user, .ip-address, .start-time]'
+mgmt_cli  -r true --format json take-over-session uid "2f5abb91-21c6-42f5-85ef-7ac5f0f56215" disconnect-active-session true  
