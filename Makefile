@@ -95,3 +95,5 @@ test-aws:
 	aws sts get-caller-identity
 test: test-aws
 
+sws: scp-start scp-wait scp-ssh
+
