@@ -97,3 +97,12 @@ test: test-aws
 
 sws: scp-start scp-wait scp-ssh
 
+haman: haman-up
+haman-up:
+	./scripts/haman-up.sh
+haman-serial:
+	./scripts/haman-serial.sh
+haman-down:
+	./scripts/haman-down.sh
+haman-ssh:
+	./scripts/haman-ssh.sh

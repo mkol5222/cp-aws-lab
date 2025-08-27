@@ -8,7 +8,7 @@ resource "tls_private_key" "ssh_key" {
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name   = "cpman-keypair-primary"
+  key_name   = "cpman-keypair-secondary"
   public_key = tls_private_key.ssh_key.public_key_openssh
 }
 
@@ -21,7 +21,7 @@ output "private_key_pem" {
 # Optional: Write private key to a local file (do NOT commit this file!)
 resource "local_file" "private_key" {
   content              = tls_private_key.ssh_key.private_key_pem
-  filename             = "${path.module}/../secrets/cpman-keypair-primary.pem"
+  filename             = "${path.module}/../secrets/cpman-keypair-secondary.pem"
   file_permission      = "0600"
   directory_permission = "0700"
 }
