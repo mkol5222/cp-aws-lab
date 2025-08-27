@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-(cd management || exit 1)
+(cd ha-man || exit 1)
 
-(cd management && terraform destroy -auto-approve)
+(cd ha-man && terraform destroy -auto-approve)
 
 echo
 echo "Remaining TF state:"
-(cd management; terraform state list)
+(cd ha-man; terraform state list)
 echo "__END__"

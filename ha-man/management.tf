@@ -1,5 +1,5 @@
 
-module "cpman" {
+module "haman" {
 
     source  = "CheckPointSW/cloudguard-network-security/aws//modules/management"
     version = "1.0.2"
@@ -9,7 +9,7 @@ module "cpman" {
     subnet_id = module.launch_vpc.public_subnets_ids_list[0]
     
     // --- EC2 Instances Configuration ---
-    management_name = "cpman"
+    management_name = "haman"
     management_instance_type = "m5.xlarge"
     key_name = aws_key_pair.generated_key.key_name // "cpman-keypair"
     allocate_and_associate_eip = true
@@ -18,10 +18,10 @@ module "cpman" {
     enable_instance_connect = false
     disable_instance_termination = false
     instance_tags = {
-      key1 = "value1"
+      key1 = "haman"
       key2 = "value2"
       "X-mko" = "MadeByTF"
-      "X-mko-role" = "cpman"
+      "X-mko-role" = "haman"
     }
     
     // --- IAM Permissions ---

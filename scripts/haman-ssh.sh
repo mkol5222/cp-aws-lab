@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-INSTANCE_ID=$(cd management; terraform output -raw id)
+INSTANCE_ID=$(cd ha-man; terraform output -raw id)
 
 # if not provided, exit
 if [ -z "$INSTANCE_ID" ]; then
