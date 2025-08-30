@@ -106,3 +106,6 @@ haman-down:
 	./scripts/haman-down.sh
 haman-ssh:
 	./scripts/haman-ssh.sh
+
+awsid:
+	aws sts get-caller-identity
