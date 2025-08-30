@@ -109,3 +109,12 @@ haman-ssh:
 
 awsid:
 	aws sts get-caller-identity
+
+cluster-stop:
+	./scripts/cluster-stop.sh
+cluster-start:
+	./scripts/cluster-start.sh
+cpman-stop:
+	./scripts/cpman-stop.sh
+cpman-start:
+	./scripts/cpman-start.sh
