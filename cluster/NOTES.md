@@ -1,5 +1,15 @@
 ```bash
 
+# cross AZ video https://www.youtube.com/watch?v=izr-tmSQ5es
+# CFT https://support.checkpoint.com/results/sk/sk111013
+
+# cross AZ: https://sc1.checkpoint.com/documents/IaaS/WebAdminGuides/EN/CP_CloudGuard_for_AWS_Cross_AZ_Cluster/Content/Topics-AWS-CrossAZ-Cluster-DG/Getting_Started_with_CloudGuard_Network_for_AWS.htm
+# single AZ: https://sc1.checkpoint.com/documents/IaaS/WebAdminGuides/EN/CloudGuard_Network_for_AWS_Single_AZ_Cluster/Content/Topics-AWS-SingleAZ-Cluster-DG/Introduction.htm
+
+# cross https://github.com/CheckPointSW/terraform-aws-cloudguard-network-security/blob/master/modules/cross_az_cluster/README.md
+# single https://github.com/CheckPointSW/terraform-aws-cloudguard-network-security/tree/master/modules/cluster
+
+
 # list EC2 instances by tag X-mko-role = cluster
 aws ec2 describe-instances --filters "Name=tag:X-mko-role,Values=cluster" --query "Reservations[*].Instances[*].{ID:InstanceId,State:State.Name,Type:InstanceType,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}" --output table
 
