@@ -24,8 +24,34 @@ locals {
       gateway_password_hash                          = var.gateway_admin_password
 
       control_gateway_over_public_or_private_address = "public"
+    },
+        {
+      gateway_name       = "gw2"
+      #instance_type      = "c5.xlarge" # go medium 4 vCPU, 8 GB RAM
+      instance_type      = "c6in.large" # go small 2 vCPU, 4 GB RAM, Intel
+      key_name           = aws_key_pair.generated_key.key_name
+      vpc_cidr           = "10.152.0.0/16"
+      subnets_bit_length = 8 # /24 subnets
+      public_subnets_map = {
+        "${local.region}a" = 1 // 10.152.1.0/24
+      }
+      private_subnets_map = {
+        "${local.region}a" = 2 // 10.152.2.0/24
+      }
+
+      gateway_version       = "R81.20-BYOL"
+      admin_shell           = "/bin/bash"
+
+      gateway_SICKey                                 = var.gateway_sic_key
+      gateway_password_hash                          = var.gateway_admin_password
+
+      control_gateway_over_public_or_private_address = "public"
     }
   ]
+}
+
+output "gw_names" {
+  value = [for gw in local.gateways : gw.gateway_name]
 }
 
 provider "aws" {}

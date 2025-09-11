@@ -15,22 +15,31 @@ fi
 
 ./tfvars.sh
 
-./tfvars.sh
+RESTARGS="${@:2}"
 
-export INSTANCE_ID=""
-export PUBLIC_IP=""
-export RESTARGS="${@:2}"
 
-terraform output -json gateways | jq -c '.[]' | while read -r gw; do
-  GW=$(echo $gw | jq -r '.name')
-  export PUBLIC_IP=$(echo $gw | jq -r '.public_ip[0]')
-  export INSTANCE_ID=$(echo $gw | jq -r '.id')
-  if [ "$GW" == "$1" ]; then
-        
-    
-  echo "$GW $PUBLIC_IP $INSTANCE_ID"
+function gatewayIP() {
+  local gwname=$1
+  terraform output -json gateways | jq -c '.[]' | while read -r gw; do
+    local name=$(echo $gw | jq -r '.name')
+    if [ "$name" == "$gwname" ]; then
+      echo $(echo $gw | jq -r '.public_ip[0]')
+      return
+    fi
+  done
+  echo ""
+}
 
-  # if no ~/.ssh/id_rsa.pub, fix it
+GWIP=$(gatewayIP $GW)
+if [ -z "$GWIP" ]; then
+    echo "Gateway $GW not found in Terraform state."
+    exit 1
+fi
+
+echo "Gateway $GW has public IP $GWIP"
+
+
+ # if no ~/.ssh/id_rsa.pub, fix it
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
   echo "No SSH public key found at ~/.ssh/id_rsa.pub. Creating one."
   # echo "Generate one with: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''"
@@ -41,15 +50,15 @@ fi
 #shift gateway name away from "$@"
 
 
-echo "Connecting to the instance $INSTANCE_ID with public IP $PUBLIC_IP using SSH..."
-ssh -t -i ../secrets/gateways-keypair.pem -o StrictHostKeyChecking=no "admin@$PUBLIC_IP" $RESTARGS
+
+if [ -z "$RESTARGS" ]; then
+  ssh -i ../secrets/gateways-keypair.pem -o StrictHostKeyChecking=no "admin@$GWIP" 
+else
+  ssh -i ../secrets/gateways-keypair.pem -o StrictHostKeyChecking=no "admin@$GWIP" $RESTARGS
+fi
 if [ $? -ne 0 ]; then
   echo "SSH connection failed. Please check your instance and network settings."
   exit 1
 fi
-break
-fi
-
-done
 
 

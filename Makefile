@@ -118,3 +118,10 @@ cpman-stop:
 	./scripts/cpman-stop.sh
 cpman-start:
 	./scripts/cpman-start.sh
+
+
+gateways: gateways-up
+gateways-up:
+	(cd ./gateways && ./up.sh)
+gateways-down:
+	(cd ./gateways && ./down.sh)

@@ -17,16 +17,26 @@ fi
 
 ./tfvars.sh
 
-terraform output -json gateways | jq -c '.[]' | while read -r gw; do
-  GW=$(echo $gw | jq -r '.name')
-  PUBLIC_IP=$(echo $gw | jq -r '.public_ip[0]')
-  INSTANCE_ID=$(echo $gw | jq -r '.id')
-    if [ "$GW" != "$1" ]; then
-        continue
-    fi
-  echo "$GW $PUBLIC_IP $INSTANCE_ID"
 
-  # if no ~/.ssh/id_rsa.pub, fix it
+function instanceID() {
+  local gwname=$1
+  terraform output -json gateways | jq -c '.[]' | while read -r gw; do
+    local name=$(echo $gw | jq -r '.name')
+    if [ "$name" == "$gwname" ]; then
+      echo $(echo $gw | jq -r '.id')
+      return
+    fi
+  done
+  echo ""
+}
+
+INSTANCE_ID=$(instanceID $GW)
+if [ -z "$INSTANCE_ID" ]; then
+    echo "Gateway $GW not found in Terraform state."
+    exit 1
+fi
+
+# if no ~/.ssh/id_rsa.pub, fix it
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
   echo "No SSH public key found at ~/.ssh/id_rsa.pub. Creating one."
   # echo "Generate one with: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ''"
@@ -36,12 +46,6 @@ fi
 
 # Copy the SSH public key to the instance
 echo "SSH key for serial console access copied to instance $INSTANCE_ID in region $REGION"
-
-echo aws ec2-instance-connect send-serial-console-ssh-public-key \
-    --instance-id "$INSTANCE_ID" \
-    --serial-port 0 \
-    --ssh-public-key file://~/.ssh/id_rsa.pub \
-    --region $REGION > /dev/null
 
 aws ec2-instance-connect send-serial-console-ssh-public-key \
     --instance-id "$INSTANCE_ID" \
@@ -60,4 +64,3 @@ echo "Exit with Enter ~."
 echo
 
 ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${INSTANCE_ID}.port0@serial-console.ec2-instance-connect.$REGION.aws"
-done
