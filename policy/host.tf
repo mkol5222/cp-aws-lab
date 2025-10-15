@@ -13,6 +13,7 @@ resource "checkpoint_management_host" "localhost" {
   color        = "red"
   tags         = ["madeByTf"]
   comments     = "local host"
+  ignore_warnings = true
 }
 
 resource "checkpoint_management_host" "example2" {

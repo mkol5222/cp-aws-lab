@@ -4,6 +4,7 @@ resource "checkpoint_management_host" "codespace" {
   color = "blue"
   tags = ["tag1", "tag2", "madeByTf"]
   comments = "Codespace host used for management"
+  ignore_warnings = true
 }
 
 data "http" "myip" {
