@@ -5,6 +5,7 @@ provider "registry.terraform.io/checkpointsw/checkpoint" {
   version     = "2.10.0"
   constraints = "2.10.0"
   hashes = [
+    "h1:rH2w0/3M60iKGrg543rwPvk9UvWDYWdcX/KxYti1UcE=",
     "h1:zjlfZMr/JHDvbd1deCy1jQxPtM+uB3CMaxgO38jxsRQ=",
     "zh:04e3bbf64e4d7cf35d148306f9484e8ed421bc75d866bbffa8d7e724b11956c5",
     "zh:0ce15de44bc8babdd28e028cda0dfb88d1d1a03d1e2ac4c144801a84c18826c0",
@@ -26,6 +27,7 @@ provider "registry.terraform.io/hashicorp/http" {
   version = "3.5.0"
   hashes = [
     "h1:8bUoPwS4hahOvzCBj6b04ObLVFXCEmEN8T/5eOHmWOM=",
+    "h1:AW5AUlPPG8wmIRpxowGHzfvwBiXoVUI6FoOf78NaxH0=",
     "zh:047c5b4920751b13425efe0d011b3a23a3be97d02d9c0e3c60985521c9c456b7",
     "zh:157866f700470207561f6d032d344916b82268ecd0cf8174fb11c0674c8d0736",
     "zh:1973eb9383b0d83dd4fd5e662f0f16de837d072b64a6b7cd703410d730499476",
