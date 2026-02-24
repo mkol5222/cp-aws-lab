@@ -2,7 +2,8 @@
 module "cpman" {
 
     source  = "CheckPointSW/cloudguard-network-security/aws//modules/management"
-    version = "1.0.2"
+    // version = "1.0.2"
+    version = "1.0.8"
 
     // --- VPC Network Configuration ---
     vpc_id = module.launch_vpc.vpc_id
@@ -30,7 +31,7 @@ module "cpman" {
     sts_roles = []
     
     // --- Check Point Settings ---
-    management_version = "R81.20-BYOL"
+    management_version = "R82.10-BYOL" // "R81.20-BYOL"
     admin_shell = "/bin/bash"
     management_password_hash = "$5$DKTe6QQSZHMos7EN$taoikN3GtQTPnCqkCV7v.PNqzyFbI4HaAvwlBkLlo64"
     management_maintenance_mode_password_hash = "" # For R81.10 and below the management_password_hash is used also as maintenance-mode password.

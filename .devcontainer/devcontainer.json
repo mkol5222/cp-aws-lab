@@ -19,7 +19,11 @@
 	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
 	// Configure tool-specific properties.
 	"customizations": {
-		"vscode": {},
+		"vscode": {
+			"extensions": [
+				"hashicorp.terraform"
+			]
+		},
 		"devcontainer": {
 			"apt": [
 				"age"
